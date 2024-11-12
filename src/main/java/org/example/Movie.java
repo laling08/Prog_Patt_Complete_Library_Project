@@ -14,6 +14,13 @@ public class Movie extends Media{
         this.duration = duration;
     }
 
+    public Movie(int id, String title, String language, Genre genre, int publicationYear, int ageRestriction,
+                 String director, int duration) {
+        super(id, title, language, genre, publicationYear, ageRestriction);
+        this.director = director;
+        this.duration = duration;
+    }
+
     public String getDirector() {
         return director;
     }

@@ -16,6 +16,14 @@ public class Magazine extends Media{
         this.publicationMonth = publicationMonth;
     }
 
+    public Magazine(int id, String title, String language, Genre genre, int publicationYear, int ageRestriction,
+                    String ISSN, String publisher, String publicationMonth) {
+        super(id, title, language, genre, publicationYear, ageRestriction);
+        this.ISSN = ISSN;
+        this.publisher = publisher;
+        this.publicationMonth = publicationMonth;
+    }
+
     public String getISSN() {
         return ISSN;
     }

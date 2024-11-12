@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,22 @@ public abstract class Media {
     protected int publicationYear;
     protected int ageRestriction;
     protected int maxCheckoutLength;
-    protected int count = 1;
+    private static int count = 1;
     protected String status;
 
     public Media(String title, String language, Genre genre, int publicationYear, int ageRestriction) {
+        this.title = title;
+        this.language = language;
+        this.genre = genre;
+        this.publicationYear = publicationYear;
+        this.ageRestriction = ageRestriction;
+        this.status = "Available";
+
+        this.id = count++;
+    }
+
+    public Media(int id, String title, String language, Genre genre, int publicationYear, int ageRestriction) {
+        this.id = id;
         this.title = title;
         this.language = language;
         this.genre = genre;
@@ -91,19 +104,20 @@ public abstract class Media {
         this.maxCheckoutLength = maxCheckoutLength;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * Finds the date that the borrowed media must be returned by
+     * @return  the date that media must be returned, in LocalDate
+     */
+    public LocalDate calculateReturnDate() {
+        LocalDate returnDate = LocalDate.now().plusDays(maxCheckoutLength);
+        return returnDate;
     }
 }

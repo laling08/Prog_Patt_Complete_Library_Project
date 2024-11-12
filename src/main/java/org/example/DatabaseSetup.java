@@ -13,7 +13,7 @@ public class DatabaseSetup {
         createMagazinesTable();
         createMediaTable();
 
-        // create tabels for user
+        // create tables for user
         createUsersTable();
         createLoansTable();
     }
@@ -23,7 +23,7 @@ public class DatabaseSetup {
      */
     private static void createBooksTable() {
         String sql = " CREATE TABLE IF NOT EXISTS books (\n " +
-                " media_id INT PRIMARY KEY, \n" +
+                " book_id INT PRIMARY KEY, \n" +
                 " title TEXT NOT NULL, \n" +
                 " language TEXT NOT NULL, \n" +
                 " genre TEXT NOT NULL, \n" +
@@ -52,7 +52,7 @@ public class DatabaseSetup {
      */
     private static void createMoviesTable() {
         String sql = " CREATE TABLE IF NOT EXISTS movies (\n " +
-                " media_id INT PRIMARY KEY, \n" +
+                " movie_id INT PRIMARY KEY, \n" +
                 " title TEXT NOT NULL, \n" +
                 " language TEXT NOT NULL, \n" +
                 " genre TEXT NOT NULL, \n" +
@@ -78,7 +78,7 @@ public class DatabaseSetup {
      */
     private static void createAudiobooksTable() {
         String sql = " CREATE TABLE IF NOT EXISTS audiobooks (\n " +
-                " media_id INT PRIMARY KEY, \n" +
+                " audiobook_id INT PRIMARY KEY, \n" +
                 " title TEXT NOT NULL, \n" +
                 " language TEXT NOT NULL, \n" +
                 " genre TEXT NOT NULL, \n" +
@@ -108,7 +108,7 @@ public class DatabaseSetup {
      */
     private static void createMagazinesTable() {
         String sql = " CREATE TABLE IF NOT EXISTS magazines (\n " +
-                " media_id INT PRIMARY KEY, \n" +
+                " magazine_id INT PRIMARY KEY, \n" +
                 " title TEXT NOT NULL, \n" +
                 " language TEXT NOT NULL, \n" +
                 " genre TEXT NOT NULL, \n" +
@@ -159,7 +159,6 @@ public class DatabaseSetup {
         String sql = " CREATE TABLE IF NOT EXISTS media (\n " +
                 " media_id INT PRIMARY KEY, \n " +
                 " type TEXT NOT NULL, \n" +
-                " type_id INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -179,7 +178,7 @@ public class DatabaseSetup {
      */
     private static void createLoansTable() {
         String sql = " CREATE TABLE IF NOT EXISTS loans (\n " +
-                " media_id INT PRIMARY KEY, \n " +
+                " media_id INT NOT NULL, \n " +
                 " user_id INT NOT NULL, \n" +
                 " type TEXT NOT NULL, \n" +
                 " title TEXT NOT NULL, \n" +

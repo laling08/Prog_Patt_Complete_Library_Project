@@ -22,6 +22,17 @@ public class Audiobook extends Media{
         this.duration = duration;
     }
 
+    public Audiobook(int id, String title, String language, Genre genre, int publicationYear, int ageRestriction,
+                     String ISBN, String author, String publisher, String narrator, int edition, int duration) {
+        super(id, title, language, genre, publicationYear, ageRestriction);
+        this.ISBN = ISBN;
+        this.author = author;
+        this.publisher = publisher;
+        this.narrator = narrator;
+        this.edition = edition;
+        this.duration = duration;
+    }
+
     public String getISBN() {
         return ISBN;
     }

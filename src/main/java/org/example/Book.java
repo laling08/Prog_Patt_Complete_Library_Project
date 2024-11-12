@@ -20,6 +20,16 @@ public class Book extends Media{
         this.edition = edition;
     }
 
+    public Book(int id, String title, String language, Genre genre, int publicationYear, int ageRestriction,
+                String ISBN, String author, String publisher, String illustrator, int edition) {
+        super(id, title, language, genre, publicationYear, ageRestriction);
+        this.ISBN = ISBN;
+        this.author = author;
+        this.publisher = publisher;
+        this.illustrator = illustrator;
+        this.edition = edition;
+    }
+
     public String getISBN() {
         return ISBN;
     }
