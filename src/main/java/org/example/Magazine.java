@@ -39,4 +39,25 @@ public class Magazine extends Media{
     public void setPublicationMonth(String publicationMonth) {
         this.publicationMonth = publicationMonth;
     }
+
+    @Override
+    public void Checkout() {
+
+    }
+
+    @Override
+    public void ReturnItem(char ReturnedCondition) {
+
+    }
+
+    @Override
+    public void renewLoan() {
+
+    }
+
+    @Override
+    public void GiveLateFee() {
+
+    }
+
 }

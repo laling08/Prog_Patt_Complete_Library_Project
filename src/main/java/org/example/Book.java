@@ -59,4 +59,26 @@ public class Book extends Media{
     public void setEdition(int edition) {
         this.edition = edition;
     }
+
+    @Override
+    public void Checkout() {
+
+    }
+
+    @Override
+    public void ReturnItem(char ReturnedCondition) {
+
+    }
+
+    @Override
+    public void renewLoan() {
+
+    }
+
+    @Override
+    public void GiveLateFee() {
+
+    }
+
+
 }
