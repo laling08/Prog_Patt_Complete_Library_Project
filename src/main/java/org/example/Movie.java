@@ -36,4 +36,25 @@ public class Movie extends Media{
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+    @Override
+    public void Checkout() {
+
+    }
+
+    @Override
+    public void ReturnItem(char ReturnedCondition) {
+
+    }
+
+    @Override
+    public void renewLoan() {
+
+    }
+
+    @Override
+    public void GiveLateFee() {
+
+    }
+
 }

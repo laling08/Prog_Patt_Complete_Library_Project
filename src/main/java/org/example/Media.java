@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Model for Media Class
  */
-public abstract class Media {
+public abstract class Media implements Loanable{
     protected int id;
     protected List<Loan> history = new ArrayList<>();
     protected String title;
