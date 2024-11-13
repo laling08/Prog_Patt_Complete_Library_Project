@@ -41,4 +41,16 @@ public class MagazineAdapter implements MediaAdapter{
     public String getMediaInfo() {
         return "Magazine ISSN: " + magazine.getISSN() + ", Publisher: " + magazine.getPublisher();
     }
+
+    public String getISSN() {
+        return magazine.getISSN();
+    }
+
+    public String getPublisher() {
+        return magazine.getPublisher();
+    }
+
+    public String getPublicationMonth() {
+        return magazine.getPublicationMonth();
+    }
 }

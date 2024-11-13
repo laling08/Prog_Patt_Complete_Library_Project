@@ -1,11 +1,11 @@
 package org.example;
 
 public interface MediaAdapter {
-    String getTitle();
-    String getLanguage();
-    Genre getGenre();
-    int getPublicationYear();
-    int getAgeRestriction();
-    int getMaxCheckoutLength();
-    String getMediaInfo();
+    public String getTitle();
+    public String getLanguage();
+    public Genre getGenre();
+    public int getPublicationYear();
+    public int getAgeRestriction();
+    public int getMaxCheckoutLength();
+    public String getMediaInfo();
 }
