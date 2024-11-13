@@ -2,7 +2,7 @@ package org.example;
 
 import java.time.LocalDate;
 
-public class User {
+public abstract class User {
     protected String fname;
     protected String lname;
     protected int id;
