@@ -15,7 +15,10 @@ public class TooYoungException extends Exception {
      *
      *
      *
-     * public class Librarian extends User {
+     * public class Loan {
+     *
+     *     // other methods here ...
+     *
      *     public void borrowBook(dob memberBirthday, int bookMinAge) throws TooYoungException {
      *         int memberBirthday = calculateAge(userBirthday);
      *         if (userAge < bookMinAge) {
