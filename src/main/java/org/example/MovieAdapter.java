@@ -42,4 +42,11 @@ public class MovieAdapter implements MediaAdapter{
         return "Movie Director: " + movie.getDirector() + ", Duration: " + movie.getDuration() + " mins";
     }
 
+    public String getDirector() {
+        return movie.getDirector();
+    }
+
+    public int getDuration() {
+        return movie.getDuration();
+    }
 }

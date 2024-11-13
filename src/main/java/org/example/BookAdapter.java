@@ -42,4 +42,24 @@ public class BookAdapter implements MediaAdapter{
     public String getMediaInfo() {
         return "Book ISBN: " + book.getISBN() + ", Author: " + book.getAuthor() + ", Publisher" + book.getPublisher();
     }
+
+    public String getISBN() {
+        return book.getISBN();
+    }
+
+    public String getAuthor() {
+        return book.getAuthor();
+    }
+
+    public String getPublisher() {
+        return book.getPublisher();
+    }
+
+    public String getIllustrator() {
+        return book.getIllustrator();
+    }
+
+    public int getEdition() {
+        return book.getEdition();
+    }
 }

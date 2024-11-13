@@ -41,4 +41,28 @@ public class AudiobookAdapter implements MediaAdapter{
     public String getMediaInfo() {
         return "Audiobook ISBN: " + audiobook.getISBN() + ", Narrator: " + audiobook.getNarrator() + ", Duration: " + audiobook.getDuration() + " mins";
     }
+
+    public String getISBN() {
+        return audiobook.getISBN();
+    }
+
+    public String getAuthor() {
+        return audiobook.getAuthor();
+    }
+
+    public String getPublisher() {
+        return audiobook.getPublisher();
+    }
+
+    public String getNarrator() {
+        return audiobook.getNarrator();
+    }
+
+    public int getEdition() {
+        return audiobook.getEdition();
+    }
+
+    public int getDuration() {
+        return audiobook.getDuration();
+    }
 }
