@@ -3,29 +3,34 @@ package org.example;
 import java.time.LocalDate;
 
 public class Loan {
-    private Media mediaType;
+    private String mediaType;
     private String title;
     private int userId;
     private int mediaId;
     private LocalDate checkoutDate;
     private LocalDate expectedReturnDate;
 
-
-
-    public Loan(Media mediaType, int userId, char currentCondition) {
-        this.mediaType = mediaType;
-        this.title = mediaType.getTitle();
-        this.userId = userId;
-        this.mediaId = mediaType.hashCode(); // This can be a unique ID generator instead
+    public Loan(Media media, User user) {
+        this.mediaType = media.getClass().toString();
+        this.title = media.getTitle();
+        this.userId = user.getId();
+        this.mediaId = media.getId();
         this.checkoutDate = LocalDate.now();
-        this.expectedReturnDate = checkoutDate.plusDays(mediaType.getMaxCheckoutLength());
+        this.expectedReturnDate = checkoutDate.plusDays(media.getMaxCheckoutLength());
     }
 
-    public Media getMediaType() {
+    public Loan(String mediaType, String title, int userId, int mediaId) {
+        this.mediaType = mediaType;
+        this.title = title;
+        this.userId = userId;
+        this.mediaId = mediaId;
+    }
+
+    public String getMediaType() {
         return mediaType;
     }
 
-    public void setMediaType(Media mediaType) {
+    public void setMediaType(String mediaType) {
         this.mediaType = mediaType;
     }
 
