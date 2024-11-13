@@ -49,4 +49,41 @@ public class User {
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
+
+    public boolean ReturnMedia (Media media) {
+        return true;
+    }
+
+    public boolean PlaceHold (Media media) {
+        return true;
+    }
+
+    public Media SearchByGenre (Genre genre) {
+        return null;
+    }
+
+    public Media SearchByType(String type) {
+        return null;
+    }
+
+    public Media SearchByTitle (String title) {
+        return null;
+    }
+
+    public Media SearchByAuthor (String author) {
+        return null;
+    }
+
+    public Media SearchByIdentifier (String identifier) {
+        return null;
+    }
+
+    public boolean PayFee (double amount) {
+        return true;
+    }
+
+    public Loan ViewPersonalHistory() {
+        return null;
+    }
+
 }
