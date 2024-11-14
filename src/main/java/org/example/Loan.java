@@ -12,7 +12,7 @@ public class Loan {
 
 
 
-    public Loan(Media mediaType, int userId) {
+    public Loan(Media mediaType, int userId, char currentCondition) {
         this.mediaType = mediaType;
         this.title = mediaType.getTitle();
         this.userId = userId;

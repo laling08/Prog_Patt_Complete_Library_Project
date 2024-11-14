@@ -204,7 +204,7 @@ public class DataAccess {
      * @param userId    the id of the user wishing to return some media
      * @param title     the title of the media that they wish to return
      */
-    public void UpdateReturnedDate(int userId, String title) {
+    public void updateReturnedDate(int userId, String title) {
         String sql = " UPDATE loans SET date_returned = ? WHERE user_id = ? AND media_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -229,7 +229,7 @@ public class DataAccess {
      * @param book      the books whose status has changed
      * @param status    the new status of the book
      */
-    private void UpdateStatus(Book book, String status) {
+    private void updateStatus(Book book, String status) {
         String sql = " UPDATE books SET status = ? WHERE book_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -253,7 +253,7 @@ public class DataAccess {
      * @param movie     the movie whose status has changed
      * @param status    the new status of the movie
      */
-    private void UpdateStatus(Movie movie, String status) {
+    private void updateStatus(Movie movie, String status) {
         String sql = " UPDATE movies SET status = ? WHERE movie_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -277,7 +277,7 @@ public class DataAccess {
      * @param audiobook the movie whose status has changed
      * @param status    the new status of the movie
      */
-    private void UpdateStatus(Audiobook audiobook, String status) {
+    private void updateStatus(Audiobook audiobook, String status) {
         String sql = " UPDATE audiobooks SET status = ? WHERE audiobook_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -301,7 +301,7 @@ public class DataAccess {
      * @param magazine  the movie whose status has changed
      * @param status    the new status of the movie
      */
-    private void UpdateStatus(Magazine magazine, String status) {
+    private void updateStatus(Magazine magazine, String status) {
         String sql = " UPDATE magazines SET status = ? WHERE magazine_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
