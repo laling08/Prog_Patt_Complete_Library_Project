@@ -4,13 +4,13 @@ import javax.swing.*;
 
 public class CompleteLibrary extends JFrame {
 
-    public CompleteLibrary () {
+    private JLabel welcomeLB;
 
-        setTitle ("Complete Library App"); // will be the title of the window
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // when you close you window, it will exit your project
-        setSize(700, 500);
-        setLocationRelativeTo(null); //
-        setVisible(true);
+    public CompleteLibrary () {
+        setTitle("Complete Library App"); // this will be the title of the window
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(700,500);
+        setLocationRelativeTo(null);
     }
 
     public static void main(String[] args) {
