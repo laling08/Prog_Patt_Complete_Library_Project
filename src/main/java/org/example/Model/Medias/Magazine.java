@@ -56,7 +56,7 @@ public class Magazine extends Media {
     }
 
     @Override
-    public void ReturnItem(char ReturnedCondition) {
+    public void ReturnItem() {
 
     }
 

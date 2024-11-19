@@ -340,7 +340,7 @@ public class DataAccess {
                     rs.getInt("book_id"),
                     rs.getString("title"),
                     rs.getString("language"),
-                    Genre.valueOf(rs.getString("genre")),
+                    Genre.valueOf("OTHER"),//rs.getString("genre")),
                     rs.getInt("publication_year"),
                     rs.getInt("age_restriction"),
                     rs.getString("ISBN"),

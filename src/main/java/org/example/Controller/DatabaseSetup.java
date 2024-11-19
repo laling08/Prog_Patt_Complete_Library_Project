@@ -34,7 +34,7 @@ public class DatabaseSetup {
                 " author TEXT NOT NULL, \n" +
                 " publisher TEXT, \n" +
                 " illustrator TEXT, \n" +
-                " edition INT NOT NULL, \n" +
+                " edition INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -60,7 +60,7 @@ public class DatabaseSetup {
                 " age_restriction INT, \n" +
                 " status TEXT NOT NULL, \n" +
                 " director TEXT NOT NULL, \n" +
-                " duration INT NOT NULL, \n" +
+                " duration INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -90,7 +90,7 @@ public class DatabaseSetup {
                 " publisher TEXT, \n" +
                 " narrator TEXT NOT NULL, \n" +
                 " edition INT NOT NULL, \n" +
-                " duration INT NOT NULL, \n" +
+                " duration INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -117,7 +117,7 @@ public class DatabaseSetup {
                 " status TEXT NOT NULL, \n" +
                 " ISSN TEXT NOT NULL, \n" +
                 " publisher TEXT NOT NULL, \n" +
-                " publication_month INT NOT NULL, \n" +
+                " publication_month INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -139,7 +139,7 @@ public class DatabaseSetup {
                 " user_id INT PRIMARY KEY, \n" +
                 " fname TEXT NOT NULL, \n" +
                 " lname TEXT NOT NULL, \n" +
-                " dob TEXT NOT NULL, \n" +
+                " dob TEXT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -158,7 +158,7 @@ public class DatabaseSetup {
     private static void createMediaTable() {
         String sql = " CREATE TABLE IF NOT EXISTS media (\n " +
                 " media_id INT PRIMARY KEY, \n " +
-                " type TEXT NOT NULL, \n" +
+                " type TEXT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
