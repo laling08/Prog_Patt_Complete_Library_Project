@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Model.Exceptions;
 
 public class TooYoungException extends Exception {
     public TooYoungException() {

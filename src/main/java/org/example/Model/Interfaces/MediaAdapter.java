@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Model.Interfaces;
+
+import org.example.Model.Enums.Genre;
 
 public interface MediaAdapter {
     public String getTitle();

@@ -1,6 +1,8 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class Movie extends Media{
+import org.example.Model.Enums.Genre;
+
+public class Movie extends Media {
     private String director;
     private int duration;
 

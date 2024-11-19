@@ -1,6 +1,8 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class Magazine extends Media{
+import org.example.Model.Enums.Genre;
+
+public class Magazine extends Media {
     private String ISSN;
     private String publisher;
     private String publicationMonth;

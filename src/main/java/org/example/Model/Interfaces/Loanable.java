@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Model.Interfaces;
 
 public interface Loanable {
     void Checkout();

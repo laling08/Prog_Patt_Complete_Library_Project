@@ -1,4 +1,8 @@
-package org.example;
+package org.example.Controller;
+
+import org.example.Model.Enums.Genre;
+import org.example.Model.Medias.*;
+import org.example.Model.Users.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 public class DataAccess {

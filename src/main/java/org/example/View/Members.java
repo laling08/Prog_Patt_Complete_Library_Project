@@ -1,6 +1,5 @@
-package org.example;
+package org.example.View;
 
-import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 
 public class Members extends JFrame {

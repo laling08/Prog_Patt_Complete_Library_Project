@@ -1,6 +1,9 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class AudiobookAdapter implements MediaAdapter{
+import org.example.Model.Enums.Genre;
+import org.example.Model.Interfaces.MediaAdapter;
+
+public class AudiobookAdapter implements MediaAdapter {
     private final Audiobook audiobook;
 
     public AudiobookAdapter(Audiobook audiobook) {

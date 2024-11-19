@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Model.Enums;
 
 public enum Genre {
     ACTION_ADVENTURE, SCIENCE_FICTION, FANTASY, MYSTERY, ROMANCE,THRILLER, HISTORY_FICTION, BIOGRAPHY_MEMOIR, SELF_HELP,

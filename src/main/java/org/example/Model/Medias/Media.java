@@ -1,4 +1,8 @@
-package org.example;
+package org.example.Model.Medias;
+
+import org.example.Model.Enums.Genre;
+import org.example.Model.Loan;
+import org.example.Model.Interfaces.Loanable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,7 +11,7 @@ import java.util.List;
 /**
  * Model for Media Class
  */
-public abstract class Media implements Loanable{
+public abstract class Media implements Loanable {
     protected int id;
     protected List<Loan> history = new ArrayList<>();
     protected String title;

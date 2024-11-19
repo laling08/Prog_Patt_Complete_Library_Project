@@ -1,6 +1,8 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class Audiobook extends Media{
+import org.example.Model.Enums.Genre;
+
+public class Audiobook extends Media {
     private String ISBN;
     private String author;
     private String publisher;

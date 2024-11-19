@@ -1,4 +1,8 @@
-package org.example;
+package org.example.Model.Users;
+
+import org.example.Model.Enums.Genre;
+import org.example.Model.Loan;
+import org.example.Model.Medias.Media;
 
 import java.time.LocalDate;
 
