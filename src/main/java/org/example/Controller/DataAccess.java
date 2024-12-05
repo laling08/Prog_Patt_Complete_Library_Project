@@ -1,5 +1,6 @@
 package org.example.Controller;
 
+import org.example.Model.Hold;
 import org.example.Model.Enums.Genre;
 import org.example.Model.Medias.*;
 import org.example.Model.Users.User;
@@ -9,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class DataAccess {
      * Adds a book to the books table
      * @param book  the book to be added to the database
      */
-    public void addBook(Book book) {
+    public static void addBook(Book book) {
         String sql = " INSERT INTO books (book_id, title, language, genre, publication_year, " +
                 "age_restriction, status, ISBN, author, publisher, illustrator, edition) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -50,8 +52,8 @@ public class DataAccess {
      * Adds a movie to the movies table
      * @param movie the movie to be added to the database
      */
-    public void addMovie(Movie movie) {
-        String sql = " INSERT INTO movies (book_id, title, language, genre, publication_year, " +
+    public static void addMovie(Movie movie) {
+        String sql = " INSERT INTO movies (movie_id, title, language, genre, publication_year, " +
                 "age_restriction, status, director, duration) VALUES(?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -79,8 +81,8 @@ public class DataAccess {
      * Adds an audiobook to the audiobooks table
      * @param audiobook the audiobook to be added to the database
      */
-    public void addAudiobook(Audiobook audiobook) {
-        String sql = " INSERT INTO audiobooks (book_id, title, language, genre, publication_year, " +
+    public static void addAudiobook(Audiobook audiobook) {
+        String sql = " INSERT INTO audiobooks (audiobook_id, title, language, genre, publication_year, " +
                 "age_restriction, status, ISBN, author, publisher, narrator, edition, duration) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -111,8 +113,8 @@ public class DataAccess {
     /** Adds a magazine to the magazine table
      * @param magazine  the magazine to be added to the database
      */
-    public void addMagazine(Magazine magazine) {
-        String sql = " INSERT INTO movies (book_id, title, language, genre, publication_year, " +
+    public static void addMagazine(Magazine magazine) {
+        String sql = " INSERT INTO magazines (magazine_id, title, language, genre, publication_year, " +
                 "age_restriction, status, ISSN, publisher, publication_month) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -142,7 +144,7 @@ public class DataAccess {
      * @param id    the id of the media to be added
      * @param type  the type of the media
      */
-    private void addMedia(int id, String type) {
+    private static void addMedia(int id, String type) {
         String sql = " INSERT INTO media (media_id, type) VALUES(?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -157,11 +159,34 @@ public class DataAccess {
         }
     }
 
+    public static String findMediaType(int id) {
+        String type = null;
+        String sql = " SELECT type FROM media WHERE id = ? ";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    type = rs.getString("type");
+                } else {
+                    System.out.println("No record found for ID: " + id);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return type;
+    }
+
+
     /**
      * Adds a user (reg. member or librarian) to the users table
      * @param user
      */
-    public void addUser(User user) {
+    public static void addUser(User user) {
         String sql = " INSERT INTO movies (user_id, fname, lname, dob) VALUES(?,?,?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -183,7 +208,7 @@ public class DataAccess {
      * @param user  the user wishing to take out the media
      * @param media the media that the user wants to take out
      */
-    public void addLoan(User user, Media media) {
+    public static void addLoan(User user, Media media) {
         String sql = " INSERT INTO loans (media_id, user_id, type, title, checkout_date, expected_return_date) VALUES(?,?,?,?,?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -207,14 +232,14 @@ public class DataAccess {
      * @param userId    the id of the user wishing to return some media
      * @param title     the title of the media that they wish to return
      */
-    public void updateReturnedDate(int userId, String title) {
+    public static void returnLoan(int userId, int mediaId) {
         String sql = " UPDATE loans SET date_returned = ? WHERE user_id = ? AND media_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
         PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, LocalDate.now().toString());
             pstmt.setInt(2, userId);
-            pstmt.setString(3, title);
+            pstmt.setInt(3, mediaId);
 
             int rowsUpdated = pstmt.executeUpdate();
             if (rowsUpdated > 0) {
@@ -232,7 +257,7 @@ public class DataAccess {
      * @param book      the books whose status has changed
      * @param status    the new status of the book
      */
-    private void updateStatus(Book book, String status) {
+    public static void updateStatus(Book book, String status) {
         String sql = " UPDATE books SET status = ? WHERE book_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -256,7 +281,7 @@ public class DataAccess {
      * @param movie     the movie whose status has changed
      * @param status    the new status of the movie
      */
-    private void updateStatus(Movie movie, String status) {
+    public static void updateStatus(Movie movie, String status) {
         String sql = " UPDATE movies SET status = ? WHERE movie_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -280,7 +305,7 @@ public class DataAccess {
      * @param audiobook the movie whose status has changed
      * @param status    the new status of the movie
      */
-    private void updateStatus(Audiobook audiobook, String status) {
+    public static void updateStatus(Audiobook audiobook, String status) {
         String sql = " UPDATE audiobooks SET status = ? WHERE audiobook_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -304,7 +329,7 @@ public class DataAccess {
      * @param magazine  the movie whose status has changed
      * @param status    the new status of the movie
      */
-    private void updateStatus(Magazine magazine, String status) {
+    public static void updateStatus(Magazine magazine, String status) {
         String sql = " UPDATE magazines SET status = ? WHERE magazine_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -328,55 +353,80 @@ public class DataAccess {
      * @param id    the id of the book to be found
      * @return      the book corresponding to the id
      */
-    public Book getBook(int id) {
+    public static Book getBook(int id) {
         Book book = null;
         String sql = "SELECT * FROM books WHERE book_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            book = new Book(
-                    rs.getInt("book_id"),
-                    rs.getString("title"),
-                    rs.getString("language"),
-                    Genre.valueOf("OTHER"),//rs.getString("genre")),
-                    rs.getInt("publication_year"),
-                    rs.getInt("age_restriction"),
-                    rs.getString("ISBN"),
-                    rs.getString("author"),
-                    rs.getString("publisher"),
-                    rs.getString("illustrator"),
-                    rs.getInt("edition"));
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String genreStr = rs.getString("genre");
+                    Genre genre = null;
 
+                    if (genreStr != null) {
+                        try {
+                            genre = Genre.valueOf(genreStr.toUpperCase());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Invalid genre value in database: " + genreStr);
+                        }
+                    }
+
+                    book = new Book(
+                            rs.getInt("book_id"),
+                            rs.getString("title"),
+                            rs.getString("language"),
+                            genre,
+                            rs.getInt("publication_year"),
+                            rs.getInt("age_restriction"),
+                            rs.getString("ISBN"),
+                            rs.getString("author"),
+                            rs.getString("publisher"),
+                            rs.getString("illustrator"),
+                            rs.getInt("edition"));
+                } else {
+                    System.out.println("No record found for ID: " + id);
+                }
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The genre is of an incorrect type.");
             System.out.println(e.getMessage());
         }
 
         return book;
     }
 
+
     /**
      * Gets all the books stored in the database
      * @return a list of all the books
      */
-    public List<Book> getAllBooks() {
+    public static List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
-        String sql = " SELECT * FROM books ";
+        String sql = "SELECT * FROM books";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
+                String genreStr = rs.getString("genre");
+                Genre genre = null;
+
+                if (genreStr != null) {
+                    try {
+                        genre = Genre.valueOf(genreStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid genre value in database: " + genreStr);
+                    }
+                }
+
                 Book book = new Book(
                         rs.getInt("book_id"),
                         rs.getString("title"),
                         rs.getString("language"),
-                        Genre.valueOf(rs.getString("genre")),
+                        genre,
                         rs.getInt("publication_year"),
                         rs.getInt("age_restriction"),
                         rs.getString("ISBN"),
@@ -388,52 +438,64 @@ public class DataAccess {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The genre is of an incorrect type.");
-            System.out.println(e.getMessage());
         }
 
         return books;
     }
+
 
     /**
      * Finds and returns a movie stored in the database
      * @param id    the id of the movie to be found
      * @return      the movie from the id
      */
-    public Movie getMovie(int id) {
+    public static Movie getMovie(int id) {
         Movie movie = null;
         String sql = "SELECT * FROM movies WHERE movie_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            movie = new Movie(
-                    rs.getInt("movie_id"),
-                    rs.getString("title"),
-                    rs.getString("language"),
-                    Genre.valueOf(rs.getString("genre")),
-                    rs.getInt("publication_year"),
-                    rs.getInt("age_restriction"),
-                    rs.getString("director"),
-                    rs.getInt("duration"));
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String genreStr = rs.getString("genre");
+                    Genre genre = null;
 
+                    if (genreStr != null) {
+                        try {
+                            genre = Genre.valueOf(genreStr.toUpperCase());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Invalid genre value in database: " + genreStr);
+                        }
+                    }
+
+                    movie = new Movie(
+                            rs.getInt("movie_id"),
+                            rs.getString("title"),
+                            rs.getString("language"),
+                            genre,
+                            rs.getInt("publication_year"),
+                            rs.getInt("age_restriction"),
+                            rs.getString("director"),
+                            rs.getInt("duration"));
+                } else {
+                    System.out.println("No record found for ID: " + id);
+                }
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The genre is of an incorrect type.");
             System.out.println(e.getMessage());
         }
 
         return movie;
     }
 
+
     /**
      * Gets all the movies stored in the database
      * @return  a list of all the movies
      */
-    public List<Movie> getAllMovies() {
+    public static List<Movie> getAllMovies() {
         List<Movie> movies = new ArrayList<>();
         String sql = "SELECT * FROM movies";
 
@@ -442,22 +504,29 @@ public class DataAccess {
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
+                String genreStr = rs.getString("genre");
+                Genre genre = null;
+
+                if (genreStr != null) {
+                    try {
+                        genre = Genre.valueOf(genreStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid genre value in database: " + genreStr);
+                    }
+                }
+
                 Movie movie = new Movie(
                         rs.getInt("movie_id"),
                         rs.getString("title"),
                         rs.getString("language"),
-                        Genre.valueOf(rs.getString("genre")),
+                        genre,
                         rs.getInt("publication_year"),
                         rs.getInt("age_restriction"),
                         rs.getString("director"),
                         rs.getInt("duration"));
                 movies.add(movie);
             }
-
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The genre is of an incorrect type.");
             System.out.println(e.getMessage());
         }
 
@@ -469,32 +538,45 @@ public class DataAccess {
      * @param id    the id of the audiobook to find
      * @return      the audiobook corresponding to the id
      */
-    public Audiobook getAudiobook(int id) {
+    public static Audiobook getAudiobook(int id) {
         Audiobook audiobook = null;
         String sql = "SELECT * FROM audiobooks WHERE audiobook_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            audiobook = new Audiobook(
-                    rs.getInt("audiobook_id"),
-                    rs.getString("title"),
-                    rs.getString("language"),
-                    Genre.valueOf(rs.getString("genre")),
-                    rs.getInt("publication_year"),
-                    rs.getInt("age_restriction"),
-                    rs.getString("ISBN"),
-                    rs.getString("author"),
-                    rs.getString("publisher"),
-                    rs.getString("narrator"),
-                    rs.getInt("edition"),
-                    rs.getInt("duration"));
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String genreStr = rs.getString("genre");
+                    Genre genre = null;
 
+                    if (genreStr != null) {
+                        try {
+                            genre = Genre.valueOf(genreStr.toUpperCase());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Invalid genre value in database: " + genreStr);
+                        }
+                    }
+
+                    audiobook = new Audiobook(
+                            rs.getInt("audiobook_id"),
+                            rs.getString("title"),
+                            rs.getString("language"),
+                            genre,
+                            rs.getInt("publication_year"),
+                            rs.getInt("age_restriction"),
+                            rs.getString("ISBN"),
+                            rs.getString("author"),
+                            rs.getString("publisher"),
+                            rs.getString("narrator"),
+                            rs.getInt("edition"),
+                            rs.getInt("duration"));
+                } else {
+                    System.out.println("No record found for ID: " + id);
+                }
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The genre is of an incorrect type.");
             System.out.println(e.getMessage());
         }
 
@@ -505,20 +587,31 @@ public class DataAccess {
      * Gets all the audioboks stored in the database
      * @return  a list of all the audiobooks
      */
-    public List<Audiobook> getAllAudiobooks() {
+    public static List<Audiobook> getAllAudiobooks() {
         List<Audiobook> audiobooks = new ArrayList<>();
-        String sql = "SELECT * FROM audiobooks WHERE audiobook_id = ?";
+        String sql = "SELECT * FROM audiobooks";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
+                String genreStr = rs.getString("genre");
+                Genre genre = null;
+
+                if (genreStr != null) {
+                    try {
+                        genre = Genre.valueOf(genreStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid genre value in database: " + genreStr);
+                    }
+                }
+
                 Audiobook audiobook = new Audiobook(
                         rs.getInt("audiobook_id"),
                         rs.getString("title"),
                         rs.getString("language"),
-                        Genre.valueOf(rs.getString("genre")),
+                        genre,
                         rs.getInt("publication_year"),
                         rs.getInt("age_restriction"),
                         rs.getString("ISBN"),
@@ -529,11 +622,7 @@ public class DataAccess {
                         rs.getInt("duration"));
                 audiobooks.add(audiobook);
             }
-
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The genre is of an incorrect type.");
             System.out.println(e.getMessage());
         }
 
@@ -545,29 +634,42 @@ public class DataAccess {
      * @param id    the id of the magazine to be found
      * @return      the magazine from the id
      */
-    public Magazine getMagazine(int id) {
+    public static Magazine getMagazine(int id) {
         Magazine magazine = null;
         String sql = "SELECT * FROM magazines WHERE magazine_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            magazine = new Magazine(
-                    rs.getInt("magazine_id"),
-                    rs.getString("title"),
-                    rs.getString("language"),
-                    Genre.valueOf(rs.getString("genre")),
-                    rs.getInt("publication_year"),
-                    rs.getInt("age_restriction"),
-                    rs.getString("ISSN"),
-                    rs.getString("publisher"),
-                    rs.getString("publication_month"));
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String genreStr = rs.getString("genre");
+                    Genre genre = null;
 
+                    if (genreStr != null) {
+                        try {
+                            genre = Genre.valueOf(genreStr.toUpperCase());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Invalid genre value in database: " + genreStr);
+                        }
+                    }
+
+                    magazine = new Magazine(
+                            rs.getInt("magazine_id"),
+                            rs.getString("title"),
+                            rs.getString("language"),
+                            genre,
+                            rs.getInt("publication_year"),
+                            rs.getInt("age_restriction"),
+                            rs.getString("ISSN"),
+                            rs.getString("publisher"),
+                            rs.getString("publication_month"));
+                } else {
+                    System.out.println("No record found for ID: " + id);
+                }
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The genre is of an incorrect type.");
             System.out.println(e.getMessage());
         }
 
@@ -578,7 +680,7 @@ public class DataAccess {
      * Gets all the magazines stored in the database
      * @return  a list of all the magazines
      */
-    public List<Magazine> getAllMagazines() {
+    public static List<Magazine> getAllMagazines() {
         List<Magazine> magazines = new ArrayList<>();
         String sql = "SELECT * FROM magazines";
 
@@ -587,11 +689,22 @@ public class DataAccess {
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
+                String genreStr = rs.getString("genre");
+                Genre genre = null;
+
+                if (genreStr != null) {
+                    try {
+                        genre = Genre.valueOf(genreStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid genre value in database: " + genreStr);
+                    }
+                }
+
                 Magazine magazine = new Magazine(
                         rs.getInt("magazine_id"),
                         rs.getString("title"),
                         rs.getString("language"),
-                        Genre.valueOf(rs.getString("genre")),
+                        genre,
                         rs.getInt("publication_year"),
                         rs.getInt("age_restriction"),
                         rs.getString("ISSN"),
@@ -599,14 +712,52 @@ public class DataAccess {
                         rs.getString("publication_month"));
                 magazines.add(magazine);
             }
-
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The genre is of an incorrect type.");
             System.out.println(e.getMessage());
         }
 
         return magazines;
+    }
+
+    /**
+     * Adds the information of a hold to the database
+     * @param hold  the hold to be inserted
+     */
+    public static void addHold(Hold hold) {
+        String sql = " INSERT INTO holds (user_id, media_id, hold_time) VALUES(?,?,?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, hold.getUserId());
+            pstmt.setInt(2, hold.getMediaId());
+            pstmt.setString(3, hold.getHoldDate().toString());
+
+            pstmt.executeUpdate();
+            System.out.println("Hold data inserted successfully");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static List<Hold> findHold(int mediaId) {
+        List<Hold> holds = new ArrayList<>();
+        String sql = " SELECT * FROM holds WHERE media_id = ? ";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, mediaId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    LocalDateTime holdTime = LocalDateTime.parse(rs.getString("hold_time"));
+                    holds.add(new Hold(userId, mediaId, holdTime));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return holds;
     }
 }

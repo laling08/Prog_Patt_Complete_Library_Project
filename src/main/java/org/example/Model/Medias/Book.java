@@ -92,5 +92,18 @@ public class Book extends Media {
 
     }
 
+    @Override
+    public String toString() {
+        String baseToString = super.toString();
 
+        return String.format("BOOK\n%sISBN:\t\t\t%s\nAuthor:\t\t\t%s\nPublisher:\t\t%s\nIllustrator:\t%s\nEdition:\t\t%d\n",
+                baseToString, ISBN, author, publisher, illustrator, edition);
+    }
+
+    public String toStringFR() {
+        String baseToString = super.toStringFR();
+
+        return String.format("LIVRE\n%sISBN:\t\t%s\nAuteur(e):\t%s\nMaison d'édition:\t%s\nIllustrateur/trice:\t%s\nÉdition:\t\t%d\n",
+                baseToString, ISBN, author, publisher, illustrator, edition);
+    }
 }

@@ -1,6 +1,7 @@
 package org.example.Model.Medias;
 
 import org.example.Model.Enums.Genre;
+import org.w3c.dom.ls.LSOutput;
 
 public class Magazine extends Media {
     private String ISSN;
@@ -70,4 +71,14 @@ public class Magazine extends Media {
 
     }
 
+    @Override
+    public String toString() {
+        return String.format("MAGAZINE\n%sISSN:\t\t\t%s\nPublisher:\t\t%s\nMonth:\t\t\t%s",
+                super.toString(), ISSN, publisher, publicationMonth);
+    }
+
+    public String toStringFR() {
+        return String.format("MAGAZINE\n%sISSN:\t\t%s\nMaison d'édition:\t%s\nMois:\t\t%s\n",
+                super.toStringFR(), ISSN, publisher, publicationMonth);
+    }
 }

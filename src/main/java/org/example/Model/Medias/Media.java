@@ -124,4 +124,15 @@ public abstract class Media implements Loanable {
         LocalDate returnDate = LocalDate.now().plusDays(maxCheckoutLength);
         return returnDate;
     }
+
+    public String toStringFR() {
+        return String.format("Titre:\t\t%s\nLangue:\t\t%s\nGenre:\t\t%s\nAnnée:\t\t%d\nStatut:\t\t%s\n",
+                title, language, genre.toString(), publicationYear, status);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Title:\t\t\t%s\nLanguage:\t\t%s\nGenre:\t\t\t%s\nYear:\t\t\t%d\nStatus:\t\t\t%s\n",
+                title, language, genre.toString(), publicationYear, status);
+    }
 }

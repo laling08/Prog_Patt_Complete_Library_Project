@@ -16,6 +16,7 @@ public class DatabaseSetup {
         // create tables for user
         createUsersTable();
         createLoansTable();
+        createHoldsTable();
     }
 
     /**
@@ -192,9 +193,28 @@ public class DatabaseSetup {
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
-            System.out.println("Loan table created successfully");
+            System.out.println("Loans table created successfully");
         } catch (SQLException e) {
-            System.out.println("Loan table could not be created");
+            System.out.println("Loans table could not be created");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void createHoldsTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS holds ("
+            + "user_id INTEGER NOT NULL,"
+            + "media_id INTEGER NOT NULL,"
+            + "hold_time DATETIME NOT NULL,"
+            + "FOREIGN KEY (user_id) REFERENCES users(user_id),"
+            + "FOREIGN KEY (media_id) REFERENCES media(media_id),"
+            + "PRIMARY KEY (user_id, media_id)"
+            + ");";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Holds table created successfully");
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
