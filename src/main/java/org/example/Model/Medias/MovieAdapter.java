@@ -1,6 +1,9 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class MovieAdapter implements MediaAdapter{
+import org.example.Model.Enums.Genre;
+import org.example.Model.Interfaces.MediaAdapter;
+
+public class MovieAdapter implements MediaAdapter {
     private final Movie movie;
 
     public MovieAdapter(Movie movie) {

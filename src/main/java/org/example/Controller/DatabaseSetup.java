@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,6 +16,7 @@ public class DatabaseSetup {
         // create tables for user
         createUsersTable();
         createLoansTable();
+        createHoldsTable();
     }
 
     /**
@@ -34,7 +35,7 @@ public class DatabaseSetup {
                 " author TEXT NOT NULL, \n" +
                 " publisher TEXT, \n" +
                 " illustrator TEXT, \n" +
-                " edition INT NOT NULL, \n" +
+                " edition INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -60,7 +61,7 @@ public class DatabaseSetup {
                 " age_restriction INT, \n" +
                 " status TEXT NOT NULL, \n" +
                 " director TEXT NOT NULL, \n" +
-                " duration INT NOT NULL, \n" +
+                " duration INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -90,7 +91,7 @@ public class DatabaseSetup {
                 " publisher TEXT, \n" +
                 " narrator TEXT NOT NULL, \n" +
                 " edition INT NOT NULL, \n" +
-                " duration INT NOT NULL, \n" +
+                " duration INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -117,7 +118,7 @@ public class DatabaseSetup {
                 " status TEXT NOT NULL, \n" +
                 " ISSN TEXT NOT NULL, \n" +
                 " publisher TEXT NOT NULL, \n" +
-                " publication_month INT NOT NULL, \n" +
+                " publication_month INT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -139,7 +140,7 @@ public class DatabaseSetup {
                 " user_id INT PRIMARY KEY, \n" +
                 " fname TEXT NOT NULL, \n" +
                 " lname TEXT NOT NULL, \n" +
-                " dob TEXT NOT NULL, \n" +
+                " dob TEXT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -158,7 +159,7 @@ public class DatabaseSetup {
     private static void createMediaTable() {
         String sql = " CREATE TABLE IF NOT EXISTS media (\n " +
                 " media_id INT PRIMARY KEY, \n " +
-                " type TEXT NOT NULL, \n" +
+                " type TEXT NOT NULL \n" +
                 " ); ";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -192,9 +193,28 @@ public class DatabaseSetup {
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
-            System.out.println("Loan table created successfully");
+            System.out.println("Loans table created successfully");
         } catch (SQLException e) {
-            System.out.println("Loan table could not be created");
+            System.out.println("Loans table could not be created");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void createHoldsTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS holds ("
+            + "user_id INTEGER NOT NULL,"
+            + "media_id INTEGER NOT NULL,"
+            + "hold_time DATETIME NOT NULL,"
+            + "FOREIGN KEY (user_id) REFERENCES users(user_id),"
+            + "FOREIGN KEY (media_id) REFERENCES media(media_id),"
+            + "PRIMARY KEY (user_id, media_id)"
+            + ");";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Holds table created successfully");
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }

@@ -1,6 +1,8 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class Audiobook extends Media{
+import org.example.Model.Enums.Genre;
+
+public class Audiobook extends Media {
     private String ISBN;
     private String author;
     private String publisher;
@@ -87,7 +89,7 @@ public class Audiobook extends Media{
     }
 
     @Override
-    public void ReturnItem(char ReturnedCondition) {
+    public void ReturnItem() {
 
     }
 
@@ -101,4 +103,18 @@ public class Audiobook extends Media{
 
     }
 
+    @Override
+    public String toString() {
+        String baseToString = super.toString();
+
+        return String.format("AUDIOBOOK\n%sISBN:\t\t\t%s\nAuthor:\t\t\t%s\nPublisher:\t\t%s\nNarrator:\t\t%s\nEdition:\t\t%d\nDuration:\t\t%s\n",
+                baseToString, ISBN, author, publisher, narrator, edition, duration);
+    }
+
+    public String toStringFR() {
+        String baseToString = super.toStringFR();
+
+        return String.format("LIVREAUDIO\n%sISBN:\t\t%s\nAuteur(e):\t%s\nMaison d'édition:\t%s\nNarrateur(e):\t%s\nÉdition:\t\t%d\nLongueur:\t%s\n",
+                baseToString, ISBN, author, publisher, narrator, edition, duration);
+    }
 }

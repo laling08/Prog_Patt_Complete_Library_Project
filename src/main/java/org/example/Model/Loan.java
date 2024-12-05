@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Model;
+
+import org.example.Model.Medias.Media;
 
 import java.time.LocalDate;
 

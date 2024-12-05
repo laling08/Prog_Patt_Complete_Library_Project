@@ -1,6 +1,8 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class Movie extends Media{
+import org.example.Model.Enums.Genre;
+
+public class Movie extends Media {
     private String director;
     private int duration;
 
@@ -43,7 +45,7 @@ public class Movie extends Media{
     }
 
     @Override
-    public void ReturnItem(char ReturnedCondition) {
+    public void ReturnItem() {
 
     }
 
@@ -57,4 +59,18 @@ public class Movie extends Media{
 
     }
 
+    @Override
+    public String toString() {
+        String baseToString = super.toString();
+
+        return String.format("MOVIE\n%sDirector:\t\t%s\nDuration:\t\t%s",
+                baseToString, director, duration);
+    }
+
+    public String toStringFR() {
+        String baseToString = super.toStringFR();
+
+        return String.format("FILM\n%sRéalisateur(trice):\t%s\nLongeur:\t\t%s",
+                baseToString, director, duration);
+    }
 }

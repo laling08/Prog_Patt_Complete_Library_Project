@@ -1,6 +1,9 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class MagazineAdapter implements MediaAdapter{
+import org.example.Model.Enums.Genre;
+import org.example.Model.Interfaces.MediaAdapter;
+
+public class MagazineAdapter implements MediaAdapter {
     private final Magazine magazine;
 
     public MagazineAdapter(Magazine magazine) {

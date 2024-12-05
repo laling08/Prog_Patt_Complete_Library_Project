@@ -1,6 +1,9 @@
-package org.example;
+package org.example.Model.Users;
 
-public class Librarian extends User{
+import org.example.Model.Loan;
+import org.example.Model.Medias.Media;
+
+public class Librarian extends User {
 
     public Librarian(String fname, String lname) {
         super(fname, lname);

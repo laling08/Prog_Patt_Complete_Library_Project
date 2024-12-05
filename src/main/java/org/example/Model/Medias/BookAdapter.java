@@ -1,6 +1,9 @@
-package org.example;
+package org.example.Model.Medias;
 
-public class BookAdapter implements MediaAdapter{
+import org.example.Model.Enums.Genre;
+import org.example.Model.Interfaces.MediaAdapter;
+
+public class BookAdapter implements MediaAdapter {
     private final Book book;
 
     public BookAdapter(Book book) {
