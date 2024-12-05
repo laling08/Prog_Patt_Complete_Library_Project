@@ -2,6 +2,7 @@ package org.example.Controller;
 
 import org.example.Model.Hold;
 import org.example.Model.Enums.Genre;
+import org.example.Model.Loan;
 import org.example.Model.Medias.*;
 import org.example.Model.Users.User;
 
@@ -205,20 +206,19 @@ public class DataAccess {
 
     /**
      * Adds the information of a loan to the database
-     * @param user  the user wishing to take out the media
-     * @param media the media that the user wants to take out
+     * @param loan  the loan to insert into the db
      */
-    public static void addLoan(User user, Media media) {
+    public static void addLoan(Loan loan) {
         String sql = " INSERT INTO loans (media_id, user_id, type, title, checkout_date, expected_return_date) VALUES(?,?,?,?,?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, media.getId());
-            pstmt.setInt(2, user.getId());
-            pstmt.setString(3, media.getClass().toString());
-            pstmt.setString(4, media.getTitle());
+            pstmt.setInt(1, loan.getMedia().getId());
+            pstmt.setInt(2, loan.getUserId());
+            pstmt.setString(3, loan.getMedia().getClass().toString());
+            pstmt.setString(4, loan.getTitle());
             pstmt.setString(5, LocalDate.now().toString());
-            pstmt.setString(6, media.calculateReturnDate().toString());
+            pstmt.setString(6, loan.getExpectedReturnDate().toString());
 
             pstmt.executeUpdate();
             System.out.println("Loan data inserted successfully");
@@ -734,6 +734,20 @@ public class DataAccess {
 
             pstmt.executeUpdate();
             System.out.println("Hold data inserted successfully");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void removeHold(Hold hold) {
+        String sql = "DELETE FROM holds WHERE user_id = ? AND media_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, hold.getUserId());
+            pstmt.setInt(2, hold.getMediaId());
+
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
