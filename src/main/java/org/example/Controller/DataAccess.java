@@ -230,7 +230,7 @@ public class DataAccess {
     /**
      * Updates the date returned of a piece of media to the current day
      * @param userId    the id of the user wishing to return some media
-     * @param title     the title of the media that they wish to return
+     * @param mediaId   the id of the media that they wish to return
      */
     public static void returnLoan(int userId, int mediaId) {
         String sql = " UPDATE loans SET date_returned = ? WHERE user_id = ? AND media_id = ?";
