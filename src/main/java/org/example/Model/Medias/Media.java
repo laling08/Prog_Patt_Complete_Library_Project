@@ -44,6 +44,9 @@ public abstract class Media implements Loanable {
         this.status = "Available";
     }
 
+    public boolean isCheckedOut() {
+        return true;
+    }
     public int getId() {
         return id;
     }
