@@ -1,12 +1,15 @@
 package org.example.Model.Users;
 
 import org.example.Model.Enums.Genre;
+import org.example.Model.Hold;
 import org.example.Model.Loan;
 import org.example.Model.Medias.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.example.Controller.DataAccess.*;
 
@@ -119,5 +122,18 @@ public abstract class User {
         }
 
         return true;
+    }
+
+    /**
+     * Helper class used in order to find the person who reserved a
+     * piece of media first, so that they get first dibs at checking it out
+     * @param mediaId   id of the media so that we can find who has a hold on it
+     * @return          the hold of the person who reserved the item first
+     */
+    private static Hold findFirstReserver(int mediaId) {
+        List<Hold> holds = findHold(mediaId);
+        Optional<Hold> earliestHold = holds.stream()
+                .min((hold1, hold2) -> hold1.getHoldDate().compareTo(hold2.getHoldDate()));
+        return earliestHold.orElse(null);
     }
 }
