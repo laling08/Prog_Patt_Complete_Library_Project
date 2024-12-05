@@ -5,30 +5,28 @@ import org.example.Model.Medias.Media;
 import java.time.LocalDate;
 
 public class Loan {
-    private Media mediaType;
+    private Media media;
     private String title;
     private int userId;
-    private int mediaId;
     private LocalDate checkoutDate;
     private LocalDate expectedReturnDate;
 
 
 
-    public Loan(Media mediaType, int userId, char currentCondition) {
-        this.mediaType = mediaType;
-        this.title = mediaType.getTitle();
+    public Loan(Media media, int userId) {
+        this.media = media;
+        this.title = media.getTitle();
         this.userId = userId;
-        this.mediaId = mediaType.hashCode(); // This can be a unique ID generator instead
         this.checkoutDate = LocalDate.now();
-        this.expectedReturnDate = checkoutDate.plusDays(mediaType.getMaxCheckoutLength());
+        this.expectedReturnDate = checkoutDate.plusDays(media.getMaxCheckoutLength());
     }
 
-    public Media getMediaType() {
-        return mediaType;
+    public Media getMedia() {
+        return media;
     }
 
-    public void setMediaType(Media mediaType) {
-        this.mediaType = mediaType;
+    public void setMedia(Media media) {
+        this.media = media;
     }
 
     public String getTitle() {
@@ -45,14 +43,6 @@ public class Loan {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getMediaId() {
-        return mediaId;
-    }
-
-    public void setMediaId(int mediaId) {
-        this.mediaId = mediaId;
     }
 
     public LocalDate getCheckoutDate() {
