@@ -3,10 +3,12 @@ package org.example.Model.Users;
 import org.example.Model.Loan;
 import org.example.Model.Medias.Media;
 
+import java.time.LocalDate;
+
 public class Librarian extends User {
 
-    public Librarian(String fname, String lname) {
-        super(fname, lname);
+    public Librarian(String fname, String lname, LocalDate dob) {
+        super(fname, lname, dob);
     }
 
     public Media ViewMemberHistory (User member) {
