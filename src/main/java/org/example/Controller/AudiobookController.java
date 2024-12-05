@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Controller;
+
+import org.example.Model.Medias.Audiobook;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +46,10 @@ public class AudiobookController {
     }
 
     // Return an audiobook
-    public void returnAudiobook(String title, char condition) {
+    public void returnAudiobook(String title) {
         Audiobook audiobook = findAudiobookByTitle(title);
         if (audiobook != null) {
-            audiobook.ReturnItem(condition);
+            audiobook.ReturnItem();
         }
     }
 
