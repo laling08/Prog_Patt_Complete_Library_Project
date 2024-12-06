@@ -777,27 +777,6 @@ public class DataAccess {
         return holds;
     }
 
-    /**
-     * Determines the type of media for a given ID
-     * @param id Media ID
-     * @return Media type as a string, e.g "Book", "Movie", "Magazine", "Audiobook"
-     */
-    public static String fineMediaType (int id) {
-        String type = null;
-        String sql = "SELECT type FROM media WHERE media_id = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                type = rs.getString("type");
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return type;
-    }
 
     public static Media getMediaById (int id) {
         String mediaType = findMediaType(id); // Determine the media type
