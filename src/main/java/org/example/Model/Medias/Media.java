@@ -128,7 +128,7 @@ public abstract class Media {
     }
 
     public String toStringFR() {
-        return String.format("Titre:\t\t%s\nLangue:\t\t\t%s\nGenre:\t\t%s\nAnnée:\t\t%d\nStatut:\t\t%s\n",
+        return String.format("Titre:\t\t%s\nLangue:\t\t%s\nGenre:\t\t%s\nAnnée:\t\t%d\nStatut:\t\t%s\n",
                 title, language, genre.toString(), publicationYear, status);
     }
 

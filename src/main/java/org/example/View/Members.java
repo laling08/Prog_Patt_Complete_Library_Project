@@ -14,6 +14,7 @@ import static org.example.Controller.DataAccess.*;
 public class Members extends JFrame {
     private ResourceBundle rm;
     private static Locale locale;
+    private List<Media> results;
 
     private JLabel nameLabel;
     private JTextField titleSearchTB;
@@ -73,6 +74,7 @@ public class Members extends JFrame {
         setVisible(true);
 
         searchBT.addActionListener(e -> search());
+        continueButton.addActionListener(e -> checkoutContinue());
     }
 
     private void setText() {
@@ -115,6 +117,13 @@ public class Members extends JFrame {
         } else {
             resultsRTB.append(rm.getString("null_search"));
         }
+
+        results = medias;
+    }
+
+    private void checkoutContinue() {
+        MembersMedia form = new MembersMedia(locale, results);
+        form.setVisible(true);
     }
 
     public static void main(String[] args) {
