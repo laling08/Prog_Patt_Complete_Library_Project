@@ -52,26 +52,6 @@ public class Magazine extends Media {
     }
 
     @Override
-    public void Checkout() {
-
-    }
-
-    @Override
-    public void ReturnItem() {
-
-    }
-
-    @Override
-    public void renewLoan() {
-
-    }
-
-    @Override
-    public void GiveLateFee() {
-
-    }
-
-    @Override
     public String toString() {
         return String.format("MAGAZINE\n%sISSN:\t\t\t%s\nPublisher:\t\t%s\nMonth:\t\t\t%s",
                 super.toString(), ISSN, publisher, publicationMonth);
