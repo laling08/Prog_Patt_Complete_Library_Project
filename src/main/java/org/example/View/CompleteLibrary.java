@@ -1,5 +1,7 @@
 package org.example.View;
 
+import org.example.Model.Users.Librarian;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +17,7 @@ public class CompleteLibrary extends JFrame {
     private JButton languageButton;
     private JLabel welcomeLB;
     private JPanel CompleteLibraryPanel;
+
 
     public CompleteLibrary() {
         locale = new Locale("en", "CA");
@@ -46,6 +49,8 @@ public class CompleteLibrary extends JFrame {
         languageButton.setBounds(50, 180, 150, 30);
         add(languageButton);
 
+        Librarian librarian = new Librarian("John", "Doe", java.time.LocalDate.now()); // Example librarian instance
+
         membersButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +62,8 @@ public class CompleteLibrary extends JFrame {
         librariansButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Librarians form = new Librarians(locale);
+
+                Librarians form = new Librarians(librarian, locale);
                 form.setVisible(true);
             }
         });

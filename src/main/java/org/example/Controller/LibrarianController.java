@@ -102,12 +102,11 @@ public class LibrarianController {
         }
     }
 
-    // New Method: CheckOut
+    // Methods for managing loans
     public void checkOut(Media media, User member) {
         if (mediaCollection.contains(media) && !isMediaCheckedOut(media)) {
             Loan loan = new Loan(media, member.getId());
             loanHistory.add(loan);
-            DataAccess.addLoan(loan); // Persist to the database
             System.out.println("Media checked out successfully: " + media.getTitle() + " to Member ID: " + member.getId());
         } else {
             System.out.println("Cannot check out media. Either it is already checked out or not available.");
@@ -118,26 +117,17 @@ public class LibrarianController {
         return loanHistory.stream().anyMatch(loan -> loan.getMedia().equals(media) && loan.getExpectedReturnDate().isAfter(LocalDate.now()));
     }
 
-    // Updated Method: GiveLateFee
     public void giveLateFee(User member) {
         LocalDate now = LocalDate.now();
-        boolean hasLateLoans = false;
-
         for (Loan loan : loanHistory) {
             if (loan.getUserId() == member.getId() && loan.getExpectedReturnDate().isBefore(now)) {
-                hasLateLoans = true;
-                System.out.println("Late fee applied for media: " + loan.getTitle() + " (Member ID: " + member.getId() + ")");
-                // Additional logic for applying penalties can go here
+                Media media = loan.getMedia();
+                System.out.println("Late fee applied for media: " + media.getTitle() + " (Member ID: " + member.getId() + ")");
             }
-        }
-
-        if (!hasLateLoans) {
-            System.out.println("No overdue loans found for Member ID: " + member.getId());
         }
     }
 
-    // Other methods remain unchanged
-    private List<Loan> viewMemberHistory(User member) {
+    public List<Loan> viewMemberHistory(User member) {
         List<Loan> memberLoans = new ArrayList<>();
         for (Loan loan : loanHistory) {
             if (loan.getUserId() == member.getId()) {
@@ -147,7 +137,7 @@ public class LibrarianController {
         return memberLoans;
     }
 
-    private List<Loan> viewReport(Media media) {
+    public List<Loan> viewReport(Media media) {
         List<Loan> mediaLoans = new ArrayList<>();
         for (Loan loan : loanHistory) {
             if (loan.getMedia().equals(media)) {
@@ -157,51 +147,39 @@ public class LibrarianController {
         return mediaLoans;
     }
 
-    private boolean addMedia(Media media) {
+    public boolean addMedia(Media media) {
         if (media != null && !mediaCollection.contains(media)) {
             mediaCollection.add(media);
             System.out.println("Media added successfully: " + media.getTitle());
             return true;
         }
-        System.out.println("Failed to add media: " + media.getTitle());
         return false;
     }
 
-    private boolean modifyMediaDetails(Media updatedMedia) {
+    public boolean modifyMediaDetails(Media updatedMedia) {
         for (int i = 0; i < mediaCollection.size(); i++) {
             Media media = mediaCollection.get(i);
             if (media.getId() == updatedMedia.getId()) {
                 mediaCollection.set(i, updatedMedia);
-                System.out.println("Media details updated successfully for: " + updatedMedia.getTitle());
                 return true;
             }
         }
-        System.out.println("Media not found to modify: " + updatedMedia.getTitle());
         return false;
     }
 
-    private boolean removeMedia(Media media) {
-        if (mediaCollection.remove(media)) {
-            System.out.println("Media removed successfully: " + media.getTitle());
-            return true;
-        }
-        System.out.println("Failed to remove media: " + media.getTitle());
-        return false;
+    public boolean removeMedia(Media media) {
+        return mediaCollection.remove(media);
     }
 
-    private void listMediaCollection() {
-        System.out.println("Listing all media in the collection:");
+    public void listMediaCollection() {
         for (Media media : mediaCollection) {
-            System.out.println("Title: " + media.getTitle());
+            System.out.println("Media: " + media.getTitle());
         }
     }
 
-    private void listLoanHistory() {
-        System.out.println("Listing all loans:");
+    public void listLoanHistory() {
         for (Loan loan : loanHistory) {
-            System.out.println("Media Title: " + loan.getTitle() + ", Borrowed By: User ID " + loan.getUserId() +
-                    ", Checkout Date: " + loan.getCheckoutDate() +
-                    ", Expected Return Date: " + loan.getExpectedReturnDate());
+            System.out.println("Loan: " + loan.getTitle() + " to Member ID: " + loan.getUserId());
         }
     }
 }

@@ -16,4 +16,13 @@ public class LibrariansOutput extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+    public void setOutput(String title, String message) {
+        // Set the title on the label
+        OutputLB.setText(title);
+
+        // Append the message to the JTextArea
+        textArea1.setText(message);  // Clear previous message and set new message
+        textArea1.setCaretPosition(0);  // Scroll to the top if necessary
+    }
 }
