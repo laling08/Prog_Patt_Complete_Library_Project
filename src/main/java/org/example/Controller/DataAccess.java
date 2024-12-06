@@ -4,6 +4,8 @@ import org.example.Model.Hold;
 import org.example.Model.Enums.Genre;
 import org.example.Model.Loan;
 import org.example.Model.Medias.*;
+import org.example.Model.Users.Librarian;
+import org.example.Model.Users.Member;
 import org.example.Model.Users.User;
 
 import java.sql.Connection;
@@ -773,5 +775,197 @@ public class DataAccess {
         }
 
         return holds;
+    }
+
+    /**
+     * Determines the type of media for a given ID
+     * @param id Media ID
+     * @return Media type as a string, e.g "Book", "Movie", "Magazine", "Audiobook"
+     */
+    public static String fineMediaType (int id) {
+        String type = null;
+        String sql = "SELECT type FROM media WHERE media_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                type = rs.getString("type");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return type;
+    }
+
+    public static Media getMediaById (int id) {
+        String mediaType = findMediaType(id); // Determine the media type
+        if (mediaType == null) {
+            System.out.println("Media not found in database.");
+            return null;
+        }
+        String sql;
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            switch (mediaType.toLowerCase()) {
+                case "book":
+                    sql = "SELECT * FROM books WHERE book_id = ?";
+                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                        pstmt.setInt(1, id);
+                        try (ResultSet rs = pstmt.executeQuery()) {
+                            if (rs.next()) {
+                                return new Book(
+                                        rs.getInt("book_id"),
+                                        rs.getString("title"),
+                                        rs.getString("language"),
+                                        Genre.valueOf(rs.getString("genre").toUpperCase()),
+                                        rs.getInt("publication_year"),
+                                        rs.getInt("age_restriction"),
+                                        rs.getString("ISBN"),
+                                        rs.getString("author"),
+                                        rs.getString("publisher"),
+                                        rs.getString("illustrator"),
+                                        rs.getInt("edition")
+                                );
+                            }
+                        }
+                    }
+                    break;
+
+                case "movie":
+                    sql = "SELECT * FROM movies WHERE movie_id = ?";
+                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                        pstmt.setInt(1, id);
+                        try (ResultSet rs = pstmt.executeQuery()) {
+                            if (rs.next()) {
+                                return new Movie(
+                                        rs.getInt("movie_id"),
+                                        rs.getString("title"),
+                                        rs.getString("language"),
+                                        Genre.valueOf(rs.getString("genre").toUpperCase()),
+                                        rs.getInt("publication_year"),
+                                        rs.getInt("age_restriction"),
+                                        rs.getString("director"),
+                                        rs.getInt("duration")
+                                );
+                            }
+                        }
+                    }
+                    break;
+
+                case "audiobook":
+                    sql = "SELECT * FROM audiobooks WHERE audiobook_id = ?";
+                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                        pstmt.setInt(1, id);
+                        try (ResultSet rs = pstmt.executeQuery()) {
+                            if (rs.next()) {
+                                return new Audiobook(
+                                        rs.getInt("audiobook_id"),
+                                        rs.getString("title"),
+                                        rs.getString("language"),
+                                        Genre.valueOf(rs.getString("genre").toUpperCase()),
+                                        rs.getInt("publication_year"),
+                                        rs.getInt("age_restriction"),
+                                        rs.getString("ISBN"),
+                                        rs.getString("author"),
+                                        rs.getString("publisher"),
+                                        rs.getString("narrator"),
+                                        rs.getInt("edition"),
+                                        rs.getInt("duration")
+                                );
+                            }
+                        }
+                    }
+                    break;
+
+                case "magazine":
+                    sql = "SELECT * FROM magazines WHERE magazine_id = ?";
+                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                        pstmt.setInt(1, id);
+                        try (ResultSet rs = pstmt.executeQuery()) {
+                            if (rs.next()) {
+                                return new Magazine(
+                                        rs.getInt("magazine_id"),
+                                        rs.getString("title"),
+                                        rs.getString("language"),
+                                        Genre.valueOf(rs.getString("genre").toUpperCase()),
+                                        rs.getInt("publication_year"),
+                                        rs.getInt("age_restriction"),
+                                        rs.getString("ISSN"),
+                                        rs.getString("publisher"),
+                                        rs.getString("publication_month")
+                                );
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    System.out.println("Invalid media type: " + mediaType);
+                    break;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching media by ID: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public static User getUserById(int id) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        User user = null;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String fname = rs.getString("fname");
+                    String lname = rs.getString("lname");
+                    LocalDate dob = LocalDate.parse(rs.getString("dob"));
+
+                    // Check if the user is a librarian or a member
+                    if (isLibrarian(id)) {
+                        user = new Librarian(fname, lname, dob);
+                        user.setId(id);
+                        System.out.println("Librarian retrieved: " + fname + " " + lname);
+                    } else {
+                        user = new Member(fname, lname, dob);
+                        user.setId(id);
+                        System.out.println("Member retrieved: " + fname + " " + lname);
+                    }
+                } else {
+                    System.out.println("No user found with ID: " + id);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching user by ID: " + e.getMessage());
+        }
+
+        return user;
+    }
+
+    /**
+     * Determines if a user is a librarian based on the ID.
+     * Assumes librarians are stored in a separate `librarians` table (if applicable).
+     *
+     * @param id The user ID.
+     * @return True if the user is a librarian, false otherwise.
+     */
+    private static boolean isLibrarian(int id) {
+        String sql = "SELECT 1 FROM librarians WHERE user_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error determining if user is a librarian: " + e.getMessage());
+        }
+        return false;
     }
 }
