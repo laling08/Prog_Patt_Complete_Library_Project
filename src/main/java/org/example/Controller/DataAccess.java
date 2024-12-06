@@ -779,114 +779,25 @@ public class DataAccess {
 
 
     public static Media getMediaById (int id) {
-        String mediaType = findMediaType(id); // Determine the media type
+        String mediaType = findMediaType(id);
         if (mediaType == null) {
             System.out.println("Media not found in database.");
             return null;
         }
-        String sql;
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            switch (mediaType.toLowerCase()) {
-                case "book":
-                    sql = "SELECT * FROM books WHERE book_id = ?";
-                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                        pstmt.setInt(1, id);
-                        try (ResultSet rs = pstmt.executeQuery()) {
-                            if (rs.next()) {
-                                return new Book(
-                                        rs.getInt("book_id"),
-                                        rs.getString("title"),
-                                        rs.getString("language"),
-                                        Genre.valueOf(rs.getString("genre").toUpperCase()),
-                                        rs.getInt("publication_year"),
-                                        rs.getInt("age_restriction"),
-                                        rs.getString("ISBN"),
-                                        rs.getString("author"),
-                                        rs.getString("publisher"),
-                                        rs.getString("illustrator"),
-                                        rs.getInt("edition")
-                                );
-                            }
-                        }
-                    }
-                    break;
 
-                case "movie":
-                    sql = "SELECT * FROM movies WHERE movie_id = ?";
-                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                        pstmt.setInt(1, id);
-                        try (ResultSet rs = pstmt.executeQuery()) {
-                            if (rs.next()) {
-                                return new Movie(
-                                        rs.getInt("movie_id"),
-                                        rs.getString("title"),
-                                        rs.getString("language"),
-                                        Genre.valueOf(rs.getString("genre").toUpperCase()),
-                                        rs.getInt("publication_year"),
-                                        rs.getInt("age_restriction"),
-                                        rs.getString("director"),
-                                        rs.getInt("duration")
-                                );
-                            }
-                        }
-                    }
-                    break;
-
-                case "audiobook":
-                    sql = "SELECT * FROM audiobooks WHERE audiobook_id = ?";
-                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                        pstmt.setInt(1, id);
-                        try (ResultSet rs = pstmt.executeQuery()) {
-                            if (rs.next()) {
-                                return new Audiobook(
-                                        rs.getInt("audiobook_id"),
-                                        rs.getString("title"),
-                                        rs.getString("language"),
-                                        Genre.valueOf(rs.getString("genre").toUpperCase()),
-                                        rs.getInt("publication_year"),
-                                        rs.getInt("age_restriction"),
-                                        rs.getString("ISBN"),
-                                        rs.getString("author"),
-                                        rs.getString("publisher"),
-                                        rs.getString("narrator"),
-                                        rs.getInt("edition"),
-                                        rs.getInt("duration")
-                                );
-                            }
-                        }
-                    }
-                    break;
-
-                case "magazine":
-                    sql = "SELECT * FROM magazines WHERE magazine_id = ?";
-                    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                        pstmt.setInt(1, id);
-                        try (ResultSet rs = pstmt.executeQuery()) {
-                            if (rs.next()) {
-                                return new Magazine(
-                                        rs.getInt("magazine_id"),
-                                        rs.getString("title"),
-                                        rs.getString("language"),
-                                        Genre.valueOf(rs.getString("genre").toUpperCase()),
-                                        rs.getInt("publication_year"),
-                                        rs.getInt("age_restriction"),
-                                        rs.getString("ISSN"),
-                                        rs.getString("publisher"),
-                                        rs.getString("publication_month")
-                                );
-                            }
-                        }
-                    }
-                    break;
-
-                default:
-                    System.out.println("Invalid media type: " + mediaType);
-                    break;
-            }
-        } catch (SQLException e) {
-            System.out.println("Error fetching media by ID: " + e.getMessage());
+        switch (mediaType.toLowerCase()) {
+            case "book":
+                return getBook(id);
+            case "movie":
+                return getMovie(id);
+            case "audiobook":
+                return getAudiobook(id);
+            case "magazine":
+                return getMagazine(id);
+            default:
+                System.out.println("Invalid media type: " + mediaType);
+                return null;
         }
-        return null;
     }
 
     public static User getUserById(int id) {
