@@ -48,7 +48,6 @@ public class UserController {
      * @throws TooYoungException
      */
     public boolean checkout(int mediaId) throws TooYoungException {
-        int userId = user.getId();
         String itemType = findMediaType(mediaId);
 
         switch (itemType) {

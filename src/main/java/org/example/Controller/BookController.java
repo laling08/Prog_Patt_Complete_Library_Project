@@ -150,6 +150,7 @@ public class BookController {
      * @throws TooYoungException
      */
     public boolean checkoutBook(User user) throws TooYoungException {
+        System.out.println(model);
         if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < model.getAgeRestriction()) {
             throw new TooYoungException();
         } else if (model.getStatus() == "Available") {

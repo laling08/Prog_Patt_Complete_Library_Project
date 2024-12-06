@@ -20,7 +20,7 @@ public abstract class User {
     protected String lname;
     protected int id;
     protected LocalDate dob;
-    private static int count = 1;
+    private static int count = 10;
 
     public User(String fname, String lname, LocalDate dob) {
         this.fname = fname;
@@ -66,5 +66,15 @@ public abstract class User {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", id=" + id +
+                ", dob=" + dob +
+                '}';
     }
 }

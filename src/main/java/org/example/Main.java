@@ -26,8 +26,8 @@ public class Main {
      * This is the start of our Complete Library.
      */
     public static void main(String[] args) {
-//         DatabaseSetup.createTables();
-//         populateDatabase();
+         DatabaseSetup.createTables();
+         populateDatabase();
 
 //        System.out.println(getAllBooks());
 //        System.out.println(getAllMovies());

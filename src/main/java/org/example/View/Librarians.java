@@ -71,13 +71,13 @@ public class Librarians extends JFrame {
 
         // Librarian RadioButton
         librarianRB = new JRadioButton();
-        librarianRB.setBounds(6, 67, 104, 29);
+        librarianRB.setBounds(6, 67, 150, 29);
         librarianRB.setVisible(false);
         addNewUserGB.add(librarianRB);
 
         // Member RadioButton
         memberRB = new JRadioButton();
-        memberRB.setBounds(6, 32, 104, 29);
+        memberRB.setBounds(6, 32, 150, 29);
         memberRB.setVisible(false);
         addNewUserGB.add(memberRB);
 
@@ -98,19 +98,19 @@ public class Librarians extends JFrame {
 
         // FirstName Label
         fnameLabel = new JLabel();
-        fnameLabel.setBounds(21, 238, 127, 25);
+        fnameLabel.setBounds(21, 238, 150, 25);
         fnameLabel.setVisible(false);
         add(fnameLabel);
 
         // LastName Label
         lnameLabel = new JLabel();
-        lnameLabel.setBounds(21, 282, 133, 25);
+        lnameLabel.setBounds(21, 282, 150, 25);
         lnameLabel.setVisible(false);
         add(lnameLabel);
 
         // DateOfBirth Label
         dobLabel = new JLabel();
-        dobLabel.setBounds(21, 325, 172, 25);
+        dobLabel.setBounds(21, 325, 180, 25);
         dobLabel.setVisible(false);
         add(dobLabel);
 
@@ -152,19 +152,19 @@ public class Librarians extends JFrame {
 
         // ReturnItem Label
         returnItemLabel = new JLabel();
-        returnItemLabel.setBounds(464, 90, 100, 50);
+        returnItemLabel.setBounds(464, 90, 150, 50);
         returnItemLabel.setVisible(false);
         add(returnItemLabel);
 
         // UserID Label
         userIdLabel = new JLabel();
-        userIdLabel.setBounds(464, 147, 74, 25);
+        userIdLabel.setBounds(464, 147, 150, 25);
         userIdLabel.setVisible(false);
         add(userIdLabel);
 
         // MediaID Label
         mediaIdLabel = new JLabel();
-        mediaIdLabel.setBounds(464, 192, 88, 25);
+        mediaIdLabel.setBounds(464, 192, 150, 25);
         mediaIdLabel.setVisible(false);
         add(mediaIdLabel);
 
@@ -182,7 +182,7 @@ public class Librarians extends JFrame {
 
         // ReturnSubmit Button
         returnSubmitButton = new JButton();
-        returnSubmitButton.setBounds(639, 238, 111, 33);
+        returnSubmitButton.setBounds(639, 238, 150, 33);
         returnSubmitButton.setVisible(false);
         add(returnSubmitButton);
 
@@ -191,7 +191,7 @@ public class Librarians extends JFrame {
         userErrorLabel.setLineWrap(true);
         userErrorLabel.setWrapStyleWord(true);
         userErrorLabel.setEditable(false);
-        userErrorLabel.setBounds(21, 382, 100, 50);
+        userErrorLabel.setBounds(21, 382, 150, 75);
         userErrorLabel.setVisible(false);
         add(userErrorLabel);
 
@@ -200,7 +200,7 @@ public class Librarians extends JFrame {
         returnErrorLabel.setLineWrap(true);
         returnErrorLabel.setWrapStyleWord(true);
         returnErrorLabel.setEditable(false);
-        returnErrorLabel.setBounds(464, 278, 70, 50);
+        returnErrorLabel.setBounds(464, 278, 150, 75);
         returnErrorLabel.setVisible(false);
         add(returnErrorLabel);
 

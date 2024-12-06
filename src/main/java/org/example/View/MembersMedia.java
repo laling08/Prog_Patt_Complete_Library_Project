@@ -154,13 +154,14 @@ public class MembersMedia extends JFrame {
                 return false;
             }
         }
+
         User user = getUser(Integer.parseInt(id));
         if (user != null) {
             idErrorLabel.setVisible(false);
             member = user;
         }
 
-        updateButtonStates(validUserFound);
+        updateButtonStates();
         return validUserFound;
     }
 
@@ -171,19 +172,20 @@ public class MembersMedia extends JFrame {
             Media selectedMedia = results.get(selectedIndex);
             item = selectedMedia;
 
-            updateButtonStates(validUserFound);
+            updateButtonStates();
         }
     }
 
-    private void updateButtonStates(boolean validUserFound) {
-        boolean isItemSelected = queriedMediaLV.getSelectedRow() != -1;
-        holdButton.setEnabled(isItemSelected && validUserFound);
-        borrowButton.setEnabled(isItemSelected && validUserFound);
+    private void updateButtonStates() {
+        holdButton.setEnabled(true);
+        borrowButton.setEnabled(true);
     }
 
     private void borrow() {
-        UserController controller = new UserController(getUser(Integer.parseInt(userIdTB.getText())));
         try {
+            int id = Integer.parseInt(userIdTB.getText());
+            User user = getUser(id);
+            UserController controller = new UserController(user);
             if (controller.checkout(item.getId())) {
                 completedLabel.setVisible(true);
                 completedLabel.setText(String.format(rm.getString("successful_checkout"), item.getTitle(), item.getMaxCheckoutLength()));
@@ -191,15 +193,17 @@ public class MembersMedia extends JFrame {
                 completedLabel.setVisible(true);
                 completedLabel.setText(String.format(rm.getString("unsuccessful_checkout"), item.getTitle()));
             }
+        } catch (NullPointerException e) {
+            idErrorLabel.setVisible(true);
         } catch (TooYoungException tye) {
-            completedLabel.setVisible(true);
+            idErrorLabel.setVisible(true);
             completedLabel.setText(rm.getString("too_young_exception"));
         }
     }
 
         private void hold() {
-            UserController controller = new UserController(member);
             try {
+                UserController controller = new UserController(member);
                 if (controller.placeHold(item.getId())) {
                     completedLabel.setVisible(true);
                     completedLabel.setText(String.format(rm.getString("successful_hold"), item.getTitle()));
@@ -210,6 +214,8 @@ public class MembersMedia extends JFrame {
             } catch (TooYoungException tye) {
                 completedLabel.setVisible(true);
                 completedLabel.setText(rm.getString("too_young_exception"));
+            } catch (NullPointerException e) {
+                idErrorLabel.setVisible(true);
             }
         }
 

@@ -260,10 +260,12 @@ public class DataAccess {
      * @param status    the new status of the book
      */
     public static void updateStatus(Book book, String status) {
+        System.out.println(book);
         String sql = " UPDATE books SET status = ? WHERE book_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, status);
             pstmt.setInt(2, book.getId());
 
