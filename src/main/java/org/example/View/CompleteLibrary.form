@@ -16,15 +16,15 @@
           <text value="Welcome to Complete Library!"/>
         </properties>
       </component>
-      <component id="4d11e" class="javax.swing.JButton" binding="compLibLanguageBT">
+      <component id="4d11e" class="javax.swing.JButton" binding="languageButton">
         <constraints>
           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="5" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="French"/>
+          <text value="Français"/>
         </properties>
       </component>
-      <component id="87132" class="javax.swing.JButton" binding="librarianBT">
+      <component id="87132" class="javax.swing.JButton" binding="librariansButton">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -32,7 +32,7 @@
           <text value="Librarians"/>
         </properties>
       </component>
-      <component id="58c4b" class="javax.swing.JButton" binding="memberBT">
+      <component id="58c4b" class="javax.swing.JButton" binding="membersButton">
         <constraints>
           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>

@@ -1,21 +1,9 @@
 package org.example.Controller;
 
 import org.example.Model.Exceptions.TooYoungException;
-import org.example.Model.Hold;
-import org.example.Model.Loan;
-import org.example.Model.Medias.Audiobook;
-import org.example.Model.Medias.Book;
-import org.example.Model.Medias.Magazine;
-import org.example.Model.Medias.Movie;
 import org.example.Model.Users.User;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
-
 import static org.example.Controller.DataAccess.*;
-import static org.example.Controller.DataAccess.updateStatus;
 
 public class UserController {
     private final User user;
@@ -37,242 +25,75 @@ public class UserController {
         String itemType = findMediaType(mediaId);
         switch (itemType) {
             case "Book":
-                Book book = getBook(mediaId);
-                if (book.getStatus() == "Checked Out") {
-                    updateStatus(book, "Available");
-                } else if (book.getStatus() == "Checked Out and Reserved") {
-                    updateStatus(book, "Reserved");
-                } else {
-                    updateStatus(book, "Unknown");
-                }
-                break;
+                BookController bookController = new BookController(getBook(mediaId));
+                return bookController.returnBook(user);
             case "Movie":
-                Movie movie = getMovie(mediaId);
-                if (movie.getStatus() == "Checked Out") {
-                    updateStatus(movie, "Available");
-                } else if (movie.getStatus() == "Checked Out and Reserved") {
-                    updateStatus(movie, "Reserved");
-                } else {
-                    updateStatus(movie, "Unknown");
-                }
-                break;
+                MovieController movieController = new MovieController(getMovie(mediaId));
+                return movieController.returnMovie(user);
             case "Audiobook":
-                Audiobook audiobook = getAudiobook(mediaId);
-                if (audiobook.getStatus() == "Checked Out") {
-                    updateStatus(audiobook, "Available");
-                } else if (audiobook.getStatus() == "Checked Out and Reserved") {
-                    updateStatus(audiobook, "Reserved");
-                } else {
-                    updateStatus(audiobook, "Unknown");
-                }
-                break;
+                AudiobookController audiobookController = new AudiobookController(getAudiobook(mediaId));
+                return audiobookController.returnAudiobook(user);
             case "Magazine":
-                Magazine magazine = getMagazine(mediaId);
-                if (magazine.getStatus() == "Checked Out") {
-                    updateStatus(magazine, "Available");
-                } else if (magazine.getStatus() == "Checked Out and Reserved") {
-                    updateStatus(magazine, "Reserved");
-                } else {
-                    updateStatus(magazine, "Unknown");
-                }
-                break;
+                MagazineController magazineController = new MagazineController(getMagazine(mediaId));
+                return magazineController.returnMagazine(user);
             default:
                 return false;
         }
-
-        return true;
     }
 
     /**
-     * Helper class used in order to find the person who reserved a
-     * piece of media first, so that they get first dibs at checking it out
-     * @param mediaId   id of the media so that we can find who has a hold on it
-     * @return          the hold of the person who reserved the item first
+     * Checkouts a book by changing its status and adding a new loan
+     * @param mediaId   ID of media being taken out
+     * @return          whether the operation was successful
+     * @throws TooYoungException
      */
-    private static Hold findFirstReserver(int mediaId) {
-        List<Hold> holds = findHold(mediaId);
-        Optional<Hold> earliestHold = holds.stream()
-                .min((hold1, hold2) -> hold1.getHoldDate().compareTo(hold2.getHoldDate()));
-        return earliestHold.orElse(null);
-    }
-
     public boolean checkout(int mediaId) throws TooYoungException {
         int userId = user.getId();
         String itemType = findMediaType(mediaId);
 
         switch (itemType) {
             case "Book":
-                Book book = getBook(mediaId);
-                if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < book.getAgeRestriction()) {
-                    throw new TooYoungException();
-                } else if (book.getStatus() == "Available") {
-                    updateStatus(book, "Checked Out");
-                    Loan loan = new Loan(getBook(mediaId), userId);
-                    addLoan(loan);
-                } else if (book.getStatus() == "Reserved") {
-                    Hold hold = findFirstReserver(mediaId);
-                    if (hold.getUserId() == userId) {
-                        List<Hold> holds = findHold(mediaId);
-                        if (holds.size() > 1) {
-                            updateStatus(book, "Checked Out and Reserved");
-                        } else {
-                            updateStatus(book, "Checked Out");
-                        }
-                        Loan loan = new Loan(getBook(mediaId), userId);
-                        addLoan(loan);
-                    }
-                    removeHold(hold);
-                } else {
-                    return false;
-                }
-                break;
+                BookController bookController = new BookController(getBook(mediaId));
+                return bookController.checkoutBook(user);
             case "Movie":
-                Movie movie = getMovie(mediaId);
-                if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < movie.getAgeRestriction()) {
-                    throw new TooYoungException();
-                } else if (movie.getStatus() == "Available") {
-                    updateStatus(movie, "Checked Out");
-                    Loan loan = new Loan(getMovie(mediaId), userId);
-                    addLoan(loan);
-                } else if (movie.getStatus() == "Reserved") {
-                    Hold hold = findFirstReserver(mediaId);
-                    if (hold.getUserId() == userId) {
-                        List<Hold> holds = findHold(mediaId);
-                        if (holds.size() > 1) {
-                            updateStatus(movie, "Checked Out and Reserved");
-                        } else {
-                            updateStatus(movie, "Checked Out");
-                        }
-                        Loan loan = new Loan(getMovie(mediaId), userId);
-                        addLoan(loan);
-                    }
-                    removeHold(hold);
-                } else {
-                    return false;
-                }
-                break;
+                MovieController movieController = new MovieController(getMovie(mediaId));
+                return movieController.checkoutMovie(user);
             case "Audiobook":
-                Audiobook audiobook = getAudiobook(mediaId);
-                if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < audiobook.getAgeRestriction()) {
-                    throw new TooYoungException();
-                } else if (audiobook.getStatus() == "Available") {
-                    updateStatus(audiobook, "Checked Out");
-                    Loan loan = new Loan(getAudiobook(mediaId), userId);
-                    addLoan(loan);
-                } else if (audiobook.getStatus() == "Reserved") {
-                    Hold hold = findFirstReserver(mediaId);
-                    if (hold.getUserId() == userId) {
-                        List<Hold> holds = findHold(mediaId);
-                        if (holds.size() > 1) {
-                            updateStatus(audiobook, "Checked Out and Reserved");
-                        } else {
-                            updateStatus(audiobook, "Checked Out");
-                        }
-                        Loan loan = new Loan(getMovie(mediaId), userId);
-                        addLoan(loan);
-                    }
-                    removeHold(hold);
-                } else {
-                    return false;
-                }
-                break;
+                AudiobookController audiobookController = new AudiobookController(getAudiobook(mediaId));
+                return audiobookController.checkoutAudiobook(user);
             case "Magazine":
-                Magazine magazine = getMagazine(mediaId);
-                if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < magazine.getAgeRestriction()) {
-                    throw new TooYoungException();
-                } else if (magazine.getStatus() == "Available") {
-                    updateStatus(magazine, "Checked Out");
-                    Loan loan = new Loan(getMagazine(mediaId), userId);
-                    addLoan(loan);
-                } else if (magazine.getStatus() == "Reserved") {
-                    Hold hold = findFirstReserver(mediaId);
-                    if (hold.getUserId() == userId) {
-                        List<Hold> holds = findHold(mediaId);
-                        if (holds.size() > 1) {
-                            updateStatus(magazine, "Checked Out and Reserved");
-                        } else {
-                            updateStatus(magazine, "Checked Out");
-                        }
-                        Loan loan = new Loan(getMagazine(mediaId), userId);
-                        addLoan(loan);
-                    }
-                    removeHold(hold);
-                } else {
-                    return false;
-                }
-                break;
+                MagazineController magazineController = new MagazineController(getMagazine(mediaId));
+                return magazineController.checkoutMagazine(user);
             default:
                 return false;
         }
-
-        return true;
     }
 
+    /**
+     * Places a hold on an item by changing its status and creating a hold
+     * @param mediaId   id of item to put on hold
+     * @return          whether the operation was successful
+     * @throws TooYoungException
+     */
     public boolean placeHold(int mediaId) throws TooYoungException {
         int userId = user.getId();
         String itemType = findMediaType(mediaId);
 
         switch (itemType) {
             case "Book":
-                Book book = getBook(mediaId);
-                if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < book.getAgeRestriction()) {
-                    throw new TooYoungException();
-                } else if (book.getStatus() == "Checked Out" || book.getStatus() == "Reserved" || book.getStatus() == "Checked Out and Reserved") {
-                    Hold hold = new Hold(userId, mediaId, LocalDateTime.now());
-                    addHold(hold);
-                    if (book.getStatus() == "Checked Out") {
-                        updateStatus(book, "Checked Out and Reserved");
-                    }
-                } else {
-                    return false;
-                }
-                break;
+                BookController bookController = new BookController(getBook(mediaId));
+                return bookController.placeBookHold(user);
             case "Movie":
-                Movie movie = getMovie(mediaId);
-                if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < movie.getAgeRestriction()) {
-                    throw new TooYoungException();
-                } else if (movie.getStatus() == "Checked Out" || movie.getStatus() == "Reserved" || movie.getStatus() == "Checked Out and Reserved") {
-                    Hold hold = new Hold(userId, mediaId, LocalDateTime.now());
-                    addHold(hold);
-                    if (movie.getStatus() == "Checked Out") {
-                        updateStatus(movie, "Checked Out and Reserved");
-                    }
-                } else {
-                    return false;
-                }
-                break;
+                MovieController movieController = new MovieController(getMovie(mediaId));
+                return movieController.placeMovieHold(user);
             case "Audiobook":
-                Audiobook audiobook = getAudiobook(mediaId);
-                if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < audiobook.getAgeRestriction()) {
-                    throw new TooYoungException();
-                } else if (audiobook.getStatus() == "Checked Out" || audiobook.getStatus() == "Reserved" || audiobook.getStatus() == "Checked Out and Reserved") {
-                    Hold hold = new Hold(userId, mediaId, LocalDateTime.now());
-                    addHold(hold);
-                    if (audiobook.getStatus() == "Checked Out") {
-                        updateStatus(audiobook, "Checked Out and Reserved");
-                    }
-                } else {
-                    return false;
-                }
-                break;
+                AudiobookController audiobookController = new AudiobookController(getAudiobook(mediaId));
+                return audiobookController.placeAudiobookHold(user);
             case "Magazine":
-                Magazine magazine = getMagazine(mediaId);
-                if (ChronoUnit.DAYS.between(user.getDob(), LocalDateTime.now()) / 365.25 < magazine.getAgeRestriction()) {
-                    throw new TooYoungException();
-                } else if (magazine.getStatus() == "Checked Out" || magazine.getStatus() == "Reserved" || magazine.getStatus() == "Checked Out and Reserved") {
-                    Hold hold = new Hold(userId, mediaId, LocalDateTime.now());
-                    addHold(hold);
-                    if (magazine.getStatus() == "Checked Out") {
-                        updateStatus(magazine, "Checked Out and Reserved");
-                    }
-                } else {
-                    return false;
-                }
-                break;
+                MagazineController magazineController = new MagazineController(getMagazine(mediaId));
+                return magazineController.placeMagazineHold(user);
             default:
                 return false;
         }
-
-        return true;
     }
 }

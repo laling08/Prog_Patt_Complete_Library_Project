@@ -9,6 +9,9 @@ import org.example.Model.Medias.Magazine;
 import org.example.Model.Medias.Movie;
 import org.example.Model.Users.Member;
 import org.example.Model.Users.User;
+import org.example.View.CompleteLibrary;
+
+import javax.swing.*;
 
 import static org.example.Controller.DataAccess.*;
 
@@ -20,10 +23,16 @@ public class Main {
 //         DatabaseSetup.createTables();
 //         populateDatabase();
 
-        System.out.println(getAllBooks());
-        System.out.println(getAllMovies());
-        System.out.println(getAllAudiobooks());
-        System.out.println(getAllMagazines());
+//        System.out.println(getAllBooks());
+//        System.out.println(getAllMovies());
+//        System.out.println(getAllAudiobooks());
+//        System.out.println(getAllMagazines());
+
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
     }
 
     public static void populateDatabase() {
@@ -72,4 +81,14 @@ public class Main {
         addMagazine(m4);
         addMagazine(m5);
     }
+
+    private static void createAndShowGUI() {
+        // Create and set up the window.
+        CompleteLibrary frame = new CompleteLibrary();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Display the window.
+        frame.setVisible(true);
+    }
+
 }

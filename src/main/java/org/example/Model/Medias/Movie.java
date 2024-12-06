@@ -40,26 +40,6 @@ public class Movie extends Media {
     }
 
     @Override
-    public void Checkout() {
-
-    }
-
-    @Override
-    public void ReturnItem() {
-
-    }
-
-    @Override
-    public void renewLoan() {
-
-    }
-
-    @Override
-    public void GiveLateFee() {
-
-    }
-
-    @Override
     public String toString() {
         String baseToString = super.toString();
 
