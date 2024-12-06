@@ -445,6 +445,54 @@ public class DataAccess {
         return books;
     }
 
+    /**
+     * Finds books whose titles contain the searchTitle
+     * @param searchTitle   Title to query
+     * @return              List of books matching title search
+     */
+    public static List<Book> findBooks(String searchTitle) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE title LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + searchTitle + "%");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String genreStr = rs.getString("genre");
+                Genre genre = null;
+
+                if (genreStr != null) {
+                    try {
+                        genre = Genre.valueOf(genreStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid genre value in database: " + genreStr);
+                    }
+                }
+
+                Book book = new Book(
+                        rs.getInt("book_id"),
+                        rs.getString("title"),
+                        rs.getString("language"),
+                        genre,
+                        rs.getInt("publication_year"),
+                        rs.getInt("age_restriction"),
+                        rs.getString("ISBN"),
+                        rs.getString("author"),
+                        rs.getString("publisher"),
+                        rs.getString("illustrator"),
+                        rs.getInt("edition"));
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return books;
+    }
+
+
 
     /**
      * Finds and returns a movie stored in the database
@@ -505,6 +553,45 @@ public class DataAccess {
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
+            while (rs.next()) {
+                String genreStr = rs.getString("genre");
+                Genre genre = null;
+
+                if (genreStr != null) {
+                    try {
+                        genre = Genre.valueOf(genreStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid genre value in database: " + genreStr);
+                    }
+                }
+
+                Movie movie = new Movie(
+                        rs.getInt("movie_id"),
+                        rs.getString("title"),
+                        rs.getString("language"),
+                        genre,
+                        rs.getInt("publication_year"),
+                        rs.getInt("age_restriction"),
+                        rs.getString("director"),
+                        rs.getInt("duration"));
+                movies.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return movies;
+    }
+
+    public static List<Movie> findMovies(String searchTitle) {
+        List<Movie> movies = new ArrayList<>();
+        String sql = "SELECT * FROM movies WHERE title LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + searchTitle + "%");
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 String genreStr = rs.getString("genre");
                 Genre genre = null;
@@ -632,6 +719,55 @@ public class DataAccess {
     }
 
     /**
+     * Finds the audiobooks with titles similar to the searched title
+     * @param searchTitle   find books with title similar to this
+     * @return              list of audiobooks with similar title
+     */
+    public static List<Audiobook> findAudiobooks(String searchTitle) {
+        List<Audiobook> audiobooks = new ArrayList<>();
+        String sql = "SELECT * FROM audiobooks WHERE title LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + searchTitle + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String genreStr = rs.getString("genre");
+                Genre genre = null;
+
+                if (genreStr != null) {
+                    try {
+                        genre = Genre.valueOf(genreStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid genre value in database: " + genreStr);
+                    }
+                }
+
+                Audiobook audiobook = new Audiobook(
+                        rs.getInt("audiobook_id"),
+                        rs.getString("title"),
+                        rs.getString("language"),
+                        genre,
+                        rs.getInt("publication_year"),
+                        rs.getInt("age_restriction"),
+                        rs.getString("ISBN"),
+                        rs.getString("author"),
+                        rs.getString("publisher"),
+                        rs.getString("narrator"),
+                        rs.getInt("edition"),
+                        rs.getInt("duration"));
+                audiobooks.add(audiobook);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return audiobooks;
+    }
+
+    /**
      * Finds and returns a magazine stored in the database
      * @param id    the id of the magazine to be found
      * @return      the magazine from the id
@@ -689,6 +825,47 @@ public class DataAccess {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String genreStr = rs.getString("genre");
+                Genre genre = null;
+
+                if (genreStr != null) {
+                    try {
+                        genre = Genre.valueOf(genreStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid genre value in database: " + genreStr);
+                    }
+                }
+
+                Magazine magazine = new Magazine(
+                        rs.getInt("magazine_id"),
+                        rs.getString("title"),
+                        rs.getString("language"),
+                        genre,
+                        rs.getInt("publication_year"),
+                        rs.getInt("age_restriction"),
+                        rs.getString("ISSN"),
+                        rs.getString("publisher"),
+                        rs.getString("publication_month"));
+                magazines.add(magazine);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return magazines;
+    }
+
+    public static List<Magazine> findMagazines(String searchTitle) {
+        List<Magazine> magazines = new ArrayList<>();
+        String sql = "SELECT * FROM magazines WHERE title LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + searchTitle + "%");
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 String genreStr = rs.getString("genre");
@@ -816,29 +993,6 @@ public class DataAccess {
             }
         } catch (SQLException e) {
             System.out.println("Error fetching member by ID: " + e.getMessage());
-        }
-        return null;
-    }
-
-    /**
-     * Determines the type of user for a given ID.
-     * @param id The user ID.
-     * @return User type as a string, e.g., "librarian" or "member".
-     */
-    public static String findUserType(int id) {
-        String sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM librarians WHERE user_id = ?) THEN 'librarian' " +
-                "WHEN EXISTS (SELECT 1 FROM members WHERE user_id = ?) THEN 'member' END AS user_type";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            pstmt.setInt(2, id);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("user_type");
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error determining user type: " + e.getMessage());
         }
         return null;
     }

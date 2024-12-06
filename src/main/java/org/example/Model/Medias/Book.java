@@ -76,7 +76,7 @@ public class Book extends Media {
     public String toString() {
         String baseToString = super.toString();
 
-        return String.format("BOOK\n%sISBN:\t\t\t%s\nAuthor:\t\t\t%s\nPublisher:\t\t%s\nIllustrator:\t%s\nEdition:\t\t%d\n",
+        return String.format("BOOK\n%sISBN:\t\t\t%s\nAuthor:\t\t\t%s\nPublisher:\t\t\t%s\nIllustrator:\t\t\t%s\nEdition:\t\t\t%d\n",
                 baseToString, ISBN, author, publisher, illustrator, edition);
     }
 

@@ -53,7 +53,7 @@ public class Magazine extends Media {
 
     @Override
     public String toString() {
-        return String.format("MAGAZINE\n%sISSN:\t\t\t%s\nPublisher:\t\t%s\nMonth:\t\t\t%s",
+        return String.format("MAGAZINE\n%sISSN:\t\t\t%s\nPublisher:\t\t\t%s\nMonth:\t\t\t%s",
                 super.toString(), ISSN, publisher, publicationMonth);
     }
 

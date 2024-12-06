@@ -66,13 +66,11 @@ public class CompleteLibrary extends JFrame {
         //languageButton.setBounds(50, 180, 150, 30);
         CompleteLibraryPanel.add(languageButton, c);
 
-        Librarian librarian = new Librarian("John", "Doe", java.time.LocalDate.now()); // Example librarian instance
-
         membersButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Members form = new Members(locale);
-                //form.setVisible(true);
+                Members form = new Members(locale);
+                form.setVisible(true);
             }
         });
 

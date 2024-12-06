@@ -87,7 +87,7 @@ public class Audiobook extends Media {
     public String toString() {
         String baseToString = super.toString();
 
-        return String.format("AUDIOBOOK\n%sISBN:\t\t\t%s\nAuthor:\t\t\t%s\nPublisher:\t\t%s\nNarrator:\t\t%s\nEdition:\t\t%d\nDuration:\t\t%s\n",
+        return String.format("AUDIOBOOK\n%sISBN:\t\t\t%s\nAuthor:\t\t\t%s\nPublisher:\t\t\t%s\nNarrator:\t\t\t%s\nEdition:\t\t\t%d\nDuration:\t\t\t%s\n",
                 baseToString, ISBN, author, publisher, narrator, edition, duration);
     }
 

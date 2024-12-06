@@ -43,7 +43,7 @@ public class Movie extends Media {
     public String toString() {
         String baseToString = super.toString();
 
-        return String.format("MOVIE\n%sDirector:\t\t%s\nDuration:\t\t%s",
+        return String.format("MOVIE\n%sDirector:\t\t\t%s\nDuration:\t\t\t%s",
                 baseToString, director, duration);
     }
 
