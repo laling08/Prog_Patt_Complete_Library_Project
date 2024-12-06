@@ -190,7 +190,7 @@ public class DataAccess {
      * @param user
      */
     public static void addUser(User user) {
-        String sql = " INSERT INTO movies (user_id, fname, lname, dob) VALUES(?,?,?,?)";
+        String sql = " INSERT INTO users (user_id, fname, lname, dob) VALUES(?,?,?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

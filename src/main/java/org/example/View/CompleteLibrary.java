@@ -3,6 +3,7 @@ package org.example.View;
 import org.example.Model.Users.Librarian;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
@@ -19,14 +20,15 @@ public class CompleteLibrary extends JFrame {
     private JPanel CompleteLibraryPanel;
 
     public CompleteLibrary() {
-        locale = new Locale("fr");
+        locale = new Locale("en");
         rm = ResourceBundle.getBundle("Resources", locale);
         initializeComponents();
     }
 
     private void initializeComponents() {
-        CompleteLibraryPanel = new JPanel();
-        CompleteLibraryPanel.setLayout(null);
+        CompleteLibraryPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 10, 10, 10);
 
         setContentPane(CompleteLibraryPanel);
         setTitle("Complete Library App");
@@ -36,20 +38,33 @@ public class CompleteLibrary extends JFrame {
         setVisible(true);
 
         welcomeLB = new JLabel(rm.getString("welcome_message"));
-        welcomeLB.setBounds(50, 30, 300, 20);
-        CompleteLibraryPanel.add(welcomeLB);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        //welcomeLB.setBounds(50, 30, 300, 20);
+        CompleteLibraryPanel.add(welcomeLB, c);
 
         membersButton = new JButton(rm.getString("members"));
-        membersButton.setBounds(50, 80, 150, 30);
-        CompleteLibraryPanel.add(membersButton);
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        //membersButton.setBounds(50, 80, 150, 30);
+        CompleteLibraryPanel.add(membersButton, c);
 
         librariansButton = new JButton(rm.getString("librarians"));
-        librariansButton.setBounds(50, 130, 150, 30);
-        CompleteLibraryPanel.add(librariansButton);
+        c.gridx = 2;
+        c.gridy = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        //librariansButton.setBounds(50, 130, 150, 30);
+        CompleteLibraryPanel.add(librariansButton, c);
 
         languageButton = new JButton(rm.getString("language"));
-        languageButton.setBounds(50, 180, 150, 30);
-        CompleteLibraryPanel.add(languageButton);
+        c.gridx = 2;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.NORTHEAST;
+        //languageButton.setBounds(50, 180, 150, 30);
+        CompleteLibraryPanel.add(languageButton, c);
 
         Librarian librarian = new Librarian("John", "Doe", java.time.LocalDate.now()); // Example librarian instance
 
@@ -65,16 +80,13 @@ public class CompleteLibrary extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Librarians form = new Librarians(librarian, locale);
+                Librarians form = new Librarians(locale);
                 form.setVisible(true);
             }
         });
 
-        languageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switchLanguage();
-            }
+        languageButton.addActionListener(e -> {
+            switchLanguage();
         });
 
         setVisible(true);
