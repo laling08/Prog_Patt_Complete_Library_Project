@@ -8,4 +8,8 @@ public class Member extends User {
         super(fname, lname, dob);
     }
 
+    public Member(int id, String fname, String lname, LocalDate dob) {
+        super(id, fname, lname, dob);
+    }
+
 }

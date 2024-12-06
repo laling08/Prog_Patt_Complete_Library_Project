@@ -52,16 +52,16 @@ public class UserController {
         String itemType = findMediaType(mediaId);
 
         switch (itemType) {
-            case "Book":
+            case "book":
                 BookController bookController = new BookController(getBook(mediaId));
                 return bookController.checkoutBook(user);
-            case "Movie":
+            case "movie":
                 MovieController movieController = new MovieController(getMovie(mediaId));
                 return movieController.checkoutMovie(user);
-            case "Audiobook":
+            case "audiobook":
                 AudiobookController audiobookController = new AudiobookController(getAudiobook(mediaId));
                 return audiobookController.checkoutAudiobook(user);
-            case "Magazine":
+            case "magazine":
                 MagazineController magazineController = new MagazineController(getMagazine(mediaId));
                 return magazineController.checkoutMagazine(user);
             default:

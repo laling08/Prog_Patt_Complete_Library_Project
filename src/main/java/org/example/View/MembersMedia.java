@@ -6,6 +6,7 @@ import org.example.Model.Medias.Media;
 import org.example.Model.Users.User;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,7 +35,7 @@ public class MembersMedia extends JFrame {
     private JLabel idErrorLabel;
     private JButton borrowButton;
     private JButton holdButton;
-    private JLabel completedLabel;
+    private JTextArea completedLabel;
 
     public MembersMedia(Locale locale, List<Media> mediaList) {
         this.locale = locale;
@@ -87,8 +88,11 @@ public class MembersMedia extends JFrame {
         holdButton.setEnabled(false);
         add(holdButton);
 
-        completedLabel = new JLabel();
-        completedLabel.setBounds(60, 362, 97, 25);
+        completedLabel = new JTextArea();
+        completedLabel.setLineWrap(true);
+        completedLabel.setWrapStyleWord(true); // Wrap at word boundaries
+        completedLabel.setBounds(60, 362, 150, 50);
+
         completedLabel.setVisible(false);
         add(completedLabel);
 
@@ -112,6 +116,8 @@ public class MembersMedia extends JFrame {
             }
         });
 
+        borrowButton.addActionListener(e -> borrow());
+        holdButton.addActionListener(e -> hold());
     }
 
     private void setText() {
@@ -135,21 +141,27 @@ public class MembersMedia extends JFrame {
         }
     }
 
-    private void userIdTextChanged() {
+    private boolean userIdTextChanged() {
         String id = userIdTB.getText();
         boolean validUserFound = false;
-
-        if (!id.chars().allMatch(Character::isDigit)) {
+        if (id == null || id.isEmpty()) {
             idErrorLabel.setVisible(true);
-        } else {
-            User user = getUser(Integer.parseInt(id));
-            if (user != null) {
-                idErrorLabel.setVisible(!validUserFound);
-                member = user;
+            return false;
+        }
+        for (char c : id.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                idErrorLabel.setVisible(true);
+                return false;
             }
+        }
+        User user = getUser(Integer.parseInt(id));
+        if (user != null) {
+            idErrorLabel.setVisible(false);
+            member = user;
         }
 
         updateButtonStates(validUserFound);
+        return validUserFound;
     }
 
     private void queriedMediaLVSelectionChanged(ListSelectionEvent e) {

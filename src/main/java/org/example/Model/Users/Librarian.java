@@ -11,6 +11,10 @@ public class Librarian extends User {
         super(fname, lname, dob);
     }
 
+    public Librarian(int id, String fname, String lname, LocalDate dob) {
+        super(id, fname, lname, dob);
+    }
+
     public Media ViewMemberHistory (User member) {
         return null;
     }

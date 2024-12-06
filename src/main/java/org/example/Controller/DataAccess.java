@@ -164,7 +164,7 @@ public class DataAccess {
 
     public static String findMediaType(int id) {
         String type = null;
-        String sql = " SELECT type FROM media WHERE id = ? ";
+        String sql = " SELECT type FROM media WHERE media_id = ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -985,6 +985,7 @@ public class DataAccess {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return new Member(
+                            rs.getInt("user_id"),
                             rs.getString("fname"),
                             rs.getString("lname"),
                             LocalDate.parse(rs.getString("dob"))

@@ -11,8 +11,6 @@ public class Loan {
     private LocalDate checkoutDate;
     private LocalDate expectedReturnDate;
 
-
-
     public Loan(Media media, int userId) {
         this.media = media;
         this.title = media.getTitle();

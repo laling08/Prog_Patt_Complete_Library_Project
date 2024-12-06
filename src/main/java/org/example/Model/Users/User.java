@@ -29,6 +29,13 @@ public abstract class User {
         this.id = count++;
     }
 
+    public User(int id, String fname, String lname, LocalDate dob) {
+        this.fname = fname;
+        this.lname = lname;
+        this.dob = dob;
+        this.id = id;
+    }
+
     public String getFname() {
         return fname;
     }

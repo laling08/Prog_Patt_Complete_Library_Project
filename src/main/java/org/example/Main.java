@@ -3,15 +3,21 @@ package org.example;
 import org.example.Controller.DataAccess;
 import org.example.Controller.DatabaseSetup;
 import org.example.Model.Enums.Genre;
+import org.example.Model.Hold;
+import org.example.Model.Loan;
 import org.example.Model.Medias.Audiobook;
 import org.example.Model.Medias.Book;
 import org.example.Model.Medias.Magazine;
 import org.example.Model.Medias.Movie;
+import org.example.Model.Users.Librarian;
 import org.example.Model.Users.Member;
 import org.example.Model.Users.User;
 import org.example.View.CompleteLibrary;
 
 import javax.swing.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.example.Controller.DataAccess.*;
 
@@ -80,6 +86,26 @@ public class Main {
         addMagazine(m3);
         addMagazine(m4);
         addMagazine(m5);
+
+        User u1 = new Member("Aurelia", "Morgensen", LocalDate.of(1978, 4, 22));
+        User u2 = new Member("Kairos", "Vantor", LocalDate.of(1989, 9, 19));
+        User u3 = new Member("Nerissa", "Michael", LocalDate.of(1994, 11, 10));
+        User u4 = new Member("Thalia", "Strom", LocalDate.of(2001, 6, 14));
+        User u5 = new Librarian("Zephyr", "Alister", LocalDate.of(1983, 3, 27));
+
+        addUser(u1);
+        addUser(u2);
+        addUser(u3);
+        addUser(u4);
+        addUser(u5);
+
+//        Loan l1 = new Loan(b1, u1.getId());
+//        Loan l2 = new Loan(mv2, u2.getId());
+//        Hold h1 = new Hold(u3.getId(), b2.getId(), LocalDateTime.now());
+//
+//        addLoan(l1);
+//        addLoan(l2);
+//        addHold(h1);
     }
 
     private static void createAndShowGUI() {
