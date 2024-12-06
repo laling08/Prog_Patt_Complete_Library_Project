@@ -801,61 +801,83 @@ public class DataAccess {
     }
 
     public static User getUserById(int id) {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
-        User user = null;
+        String userType = findUserType(id); // Determine the user type
+        if (userType == null) {
+            System.out.println("User not found in the database.");
+            return null;
+        }
 
+        switch (userType.toLowerCase()) {
+            case "librarian":
+                return getLibrarianById(id);
+            case "member":
+                return getMemberById(id);
+            default:
+                System.out.println("Unknown user type: " + userType);
+                return null;
+        }
+    }
+
+    public static Librarian getLibrarianById(int id) {
+        String sql = "SELECT * FROM librarians l INNER JOIN users u ON l.user_id = u.user_id WHERE l.user_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setInt(1, id);
-
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    String fname = rs.getString("fname");
-                    String lname = rs.getString("lname");
-                    LocalDate dob = LocalDate.parse(rs.getString("dob"));
-
-                    // Check if the user is a librarian or a member
-                    if (isLibrarian(id)) {
-                        user = new Librarian(fname, lname, dob);
-                        user.setId(id);
-                        System.out.println("Librarian retrieved: " + fname + " " + lname);
-                    } else {
-                        user = new Member(fname, lname, dob);
-                        user.setId(id);
-                        System.out.println("Member retrieved: " + fname + " " + lname);
-                    }
-                } else {
-                    System.out.println("No user found with ID: " + id);
+                    return new Librarian(
+                            rs.getString("fname"),
+                            rs.getString("lname"),
+                            LocalDate.parse(rs.getString("dob"))
+                    );
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error fetching user by ID: " + e.getMessage());
+            System.out.println("Error fetching librarian by ID: " + e.getMessage());
         }
+        return null;
+    }
 
-        return user;
+    public static Member getMemberById(int id) {
+        String sql = "SELECT * FROM members m INNER JOIN users u ON m.user_id = u.user_id WHERE m.user_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Member(
+                            rs.getString("fname"),
+                            rs.getString("lname"),
+                            LocalDate.parse(rs.getString("dob"))
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching member by ID: " + e.getMessage());
+        }
+        return null;
     }
 
     /**
-     * Determines if a user is a librarian based on the ID.
-     * Assumes librarians are stored in a separate `librarians` table (if applicable).
-     *
+     * Determines the type of user for a given ID.
      * @param id The user ID.
-     * @return True if the user is a librarian, false otherwise.
+     * @return User type as a string, e.g., "librarian" or "member".
      */
-    private static boolean isLibrarian(int id) {
-        String sql = "SELECT 1 FROM librarians WHERE user_id = ?";
+    public static String findUserType(int id) {
+        String sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM librarians WHERE user_id = ?) THEN 'librarian' " +
+                "WHEN EXISTS (SELECT 1 FROM members WHERE user_id = ?) THEN 'member' END AS user_type";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setInt(1, id);
-
+            pstmt.setInt(2, id);
             try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next();
+                if (rs.next()) {
+                    return rs.getString("user_type");
+                }
             }
         } catch (SQLException e) {
-            System.out.println("Error determining if user is a librarian: " + e.getMessage());
+            System.out.println("Error determining user type: " + e.getMessage());
         }
-        return false;
+        return null;
     }
 }
