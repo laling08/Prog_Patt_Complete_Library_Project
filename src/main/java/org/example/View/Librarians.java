@@ -16,7 +16,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static org.example.Controller.DataAccess.getUserById;
+import static org.example.Controller.DataAccess.getUser;
 
 public class Librarians extends JFrame {
     private ResourceBundle rm;
@@ -183,7 +183,6 @@ public class Librarians extends JFrame {
         // ReturnSubmit Button
         returnSubmitButton = new JButton();
         returnSubmitButton.setBounds(639, 238, 111, 33);
-        returnSubmitButton.setEnabled(false);
         returnSubmitButton.setVisible(false);
         add(returnSubmitButton);
 
@@ -351,13 +350,17 @@ public class Librarians extends JFrame {
         int userId = Integer.parseInt(userIdTB.getText());
         int mediaId = Integer.parseInt(mediaIdTB.getText());
 
-        UserController controller = new UserController(getUserById(userId));
-        boolean mediaReturn = controller.returnMedia(mediaId);
+        UserController controller = new UserController(getUser(userId));
+        try {
+            boolean mediaReturn = controller.returnMedia(mediaId);
 
-        if (mediaReturn) {
-            returnErrorLabel.setText(String.format(rm.getString("return"), mediaId));
-        } else {
-            returnErrorLabel.setText(String.format(rm.getString("invalid_loan")));
+            if (mediaReturn) {
+                returnErrorLabel.setText(String.format(rm.getString("return"), mediaId));
+            } else {
+                returnErrorLabel.setText(String.format(rm.getString("invalid_loan")));
+            }
+        } catch (NullPointerException e) {
+            returnErrorLabel.setText(rm.getString("invalid_loan"));
         }
 
         returnErrorLabel.setVisible(true);

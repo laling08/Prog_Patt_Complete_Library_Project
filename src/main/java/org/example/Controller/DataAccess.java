@@ -800,46 +800,8 @@ public class DataAccess {
         }
     }
 
-    public static User getUserById(int id) {
-        String userType = findUserType(id); // Determine the user type
-        if (userType == null) {
-            System.out.println("User not found in the database.");
-            return null;
-        }
-
-        switch (userType.toLowerCase()) {
-            case "librarian":
-                return getLibrarianById(id);
-            case "member":
-                return getMemberById(id);
-            default:
-                System.out.println("Unknown user type: " + userType);
-                return null;
-        }
-    }
-
-    public static Librarian getLibrarianById(int id) {
-        String sql = "SELECT * FROM librarians l INNER JOIN users u ON l.user_id = u.user_id WHERE l.user_id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Librarian(
-                            rs.getString("fname"),
-                            rs.getString("lname"),
-                            LocalDate.parse(rs.getString("dob"))
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error fetching librarian by ID: " + e.getMessage());
-        }
-        return null;
-    }
-
-    public static Member getMemberById(int id) {
-        String sql = "SELECT * FROM members m INNER JOIN users u ON m.user_id = u.user_id WHERE m.user_id = ?";
+    public static User getUser(int id) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
