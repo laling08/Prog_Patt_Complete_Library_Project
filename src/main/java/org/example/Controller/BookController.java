@@ -109,10 +109,9 @@ public class BookController {
 
     /**
      * Adds a new book to the database
-     * @param book  new book to add to database
      */
-    public void addBook(Book book) {
-        DataAccess.addBook(book);
+    public void addBook() {
+        DataAccess.addBook(model);
     }
 
     /**

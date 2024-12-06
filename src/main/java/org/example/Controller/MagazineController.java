@@ -94,10 +94,9 @@ public class MagazineController {
 
     /**
      * Adds a new magazine to the database
-     * @param magazine  new magazine to add to database
      */
-    public void addMagazine(Magazine magazine) {
-        DataAccess.addMagazine(magazine);
+    public void addMagazine() {
+        DataAccess.addMagazine(model);
     }
 
     /**

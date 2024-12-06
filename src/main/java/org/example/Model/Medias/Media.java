@@ -19,7 +19,7 @@ public abstract class Media {
     protected int publicationYear;
     protected int ageRestriction;
     protected int maxCheckoutLength;
-    private static int count = 1;
+    private static int count = 25;
     protected String status;
 
     public Media(String title, String language, Genre genre, int publicationYear, int ageRestriction) {

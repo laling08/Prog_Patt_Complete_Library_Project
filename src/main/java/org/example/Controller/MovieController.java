@@ -84,10 +84,9 @@ public class MovieController {
 
     /**
      * Adds a new movie to the database
-     * @param movie  new movie to add to database
      */
-    public void addMovie(Movie movie) {
-        DataAccess.addMovie(movie);
+    public void addMovie() {
+        DataAccess.addMovie(model);
     }
 
     /**

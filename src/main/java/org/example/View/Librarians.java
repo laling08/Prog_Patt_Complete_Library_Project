@@ -39,7 +39,7 @@ public class Librarians extends JFrame {
     private JButton userSubmitButton;
     private JTextField dayTB;
     private JTextField monthTB;
-    private JTextArea returnItemLabel;
+    private JLabel returnItemLabel;
     private JLabel userIdLabel;
     private JLabel mediaIdLabel;
     private JTextField userIdTB;
@@ -48,8 +48,8 @@ public class Librarians extends JFrame {
     private JTextArea userErrorLabel;
     private JTextArea returnErrorLabel;
 
-    public Librarians(Locale locale) {
-        locale = locale;
+    public Librarians(Locale l) {
+        this.locale = l;
         rm = ResourceBundle.getBundle("Resources", locale);
         initializeComponents();
         setText();
@@ -151,10 +151,7 @@ public class Librarians extends JFrame {
         add(monthTB);
 
         // ReturnItem Label
-        returnItemLabel = new JTextArea();
-        returnItemLabel.setLineWrap(true);
-        returnItemLabel.setWrapStyleWord(true);
-        returnItemLabel.setEditable(false);
+        returnItemLabel = new JLabel();
         returnItemLabel.setBounds(464, 90, 100, 50);
         returnItemLabel.setVisible(false);
         add(returnItemLabel);
@@ -296,8 +293,8 @@ public class Librarians extends JFrame {
     }
 
     private void showMediaForm() {
-        LibrarianAddMedia form = new LibrarianAddMedia(); // locale
-        //form.setVisible(true);
+        LibrarianAddMedia form = new LibrarianAddMedia(locale); // locale
+        form.setVisible(true);
     }
 
     private void validateForm() {

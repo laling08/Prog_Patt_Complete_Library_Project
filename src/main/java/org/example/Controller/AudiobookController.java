@@ -115,8 +115,8 @@ public class AudiobookController {
     }
 
     // Add a new audiobook to the library
-    public void addAudiobook(Audiobook audiobook) {
-        DataAccess.addAudiobook(audiobook);
+    public void addAudiobook() {
+        DataAccess.addAudiobook(model);
     }
 
     // List all available audiobooks
