@@ -21,6 +21,8 @@ public class CompleteLibrary extends JFrame {
 
     public CompleteLibrary() {
         locale = new Locale("en");
+//        rm = ResourceBundle.getBundle("Resources", locale);
+//
         rm = ResourceBundle.getBundle("Resources", locale);
         initializeComponents();
     }
